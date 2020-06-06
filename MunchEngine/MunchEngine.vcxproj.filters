@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\Core\Common.cpp" />
+    <ClCompile Include="src\Core\Logger.cpp" />
+    <ClCompile Include="src\Window\AbstractWindow.cpp" />
+    <ClCompile Include="src\App\App.cpp" />
+    <ClCompile Include="src\Core\Color.cpp" />
+    <ClCompile Include="src\Core\Math.cpp" />
+    <ClCompile Include="src\Physics\Physics.cpp" />
+    <ClCompile Include="src\Window\MainWindow.cpp" />
+    <ClCompile Include="src\Event\Event.cpp" />
+    <ClCompile Include="src\Event\EventDispatcher.cpp" />
+    <ClCompile Include="src\Layer\Layer.cpp" />
+    <ClCompile Include="src\Event\Types\KeyEvent.cpp" />
+    <ClCompile Include="src\Event\Types\MouseMoveEvent.cpp" />
+    <ClCompile Include="src\Event\Types\MousePressEvent.cpp" />
+    <ClCompile Include="src\Layer\TestLayer.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\App\App.h" />
+    <ClInclude Include="src\Event\Event.h" />
+    <ClInclude Include="src\Window\AbstractWindow.h" />
+    <ClInclude Include="src\Core\Common.h" />
+    <ClInclude Include="src\Core\Logger.h" />
+    <ClInclude Include="src\Core\Color.h" />
+    <ClInclude Include="src\Core\Math.h" />
+    <ClInclude Include="src\Physics\Physics.h" />
+    <ClInclude Include="src\Window\MainWindow.h" />
+    <ClInclude Include="src\Event\EventDispatcher.h" />
+    <ClInclude Include="src\Layer\Layer.h" />
+    <ClInclude Include="src\Event\Types\KeyEvent.h" />
+    <ClInclude Include="src\Event\Types\MouseMoveEvent.h" />
+    <ClInclude Include="src\Event\Types\MousePressEvent.h" />
+    <ClInclude Include="src\Layer\TestLayer.h" />
+  </ItemGroup>
+</Project>
