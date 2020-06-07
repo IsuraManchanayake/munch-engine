@@ -51,6 +51,31 @@ void AbstractWindow::setCurrentContext() {
     glfwMakeContextCurrent(window);
 }
 
+void AbstractWindow::setupLayers() {
+    for(auto& layer : layers) {
+        layer->setup();
+    }
+}
+
+void AbstractWindow::updateLayers() {
+    for(auto& layer : layers) {
+        layer->update();
+    }
+}
+
+void AbstractWindow::setupWindow() {
+    setCurrentContext();
+    setup();
+    setupLayers();
+}
+
+void AbstractWindow::updateWindow() {
+    setCurrentContext();
+    update();
+    updateLayers();
+    swapBuffers();
+}
+
 void AbstractWindow::handleEvent(Event& event) {
     Logger::trace("Event in window level ", event);
     for(auto it = layers.rbegin(); !event.handled && it != layers.rend(); it++) {
@@ -87,24 +112,31 @@ void AbstractWindow::handleKeys(GLFWwindow* glfwWindow, int key, int code, int a
     if (key >= 0 && key < 1024) {
         if (action == GLFW_PRESS) {
             window->keys[key] = 1;
-            KeyPressEvent event(window->keys);
+            KeyPressEvent event(window->keys, key);
             window->handleEvent(event);
         } else if(action == GLFW_REPEAT) {
             window->keys[key]++;
-            KeyRepeatEvent event(window->keys);
+            KeyRepeatEvent event(window->keys, key);
             window->handleEvent(event);
         } else if (action == GLFW_RELEASE) {
             window->keys[key] = 0;
-            KeyReleaseEvent event(window->keys);
+            KeyReleaseEvent event(window->keys, key);
             window->handleEvent(event);
         }
     }
+}
+
+void AbstractWindow::handleWindowResize(GLFWwindow* glfwWindow, int width, int height) {
+    AbstractWindow* window = static_cast<AbstractWindow*>(glfwGetWindowUserPointer(glfwWindow));
+    WindowResizeEvent event(width, height); 
+    window->handleEvent(event);
 }
 
 void AbstractWindow::createCallbacks() {
     glfwSetCursorPosCallback(window, AbstractWindow::handleMouseMove);
     glfwSetMouseButtonCallback(window, AbstractWindow::handleMouseButton);
     glfwSetKeyCallback(window, AbstractWindow::handleKeys);
+    glfwSetWindowSizeCallback(window, AbstractWindow::handleWindowResize);
 }
 
 AbstractWindow::Mouse::Mouse() 

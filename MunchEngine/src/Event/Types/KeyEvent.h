@@ -7,21 +7,22 @@
 using KeyContainer = std::array<uint16_t, 1024>;
 
 struct KeyEvent : Event {
-    KeyEvent(Event::Type type, const KeyContainer& keys);
+    KeyEvent(Event::Type type, const KeyContainer& keys, int key, int action);
 
     const KeyContainer& keys;
+    int key, action;
 };
 
 struct KeyPressEvent : KeyEvent {
-    KeyPressEvent(const KeyContainer& keys);
+    KeyPressEvent(const KeyContainer& keys, int key);
 };
 
 struct KeyReleaseEvent : KeyEvent {
-    KeyReleaseEvent(const KeyContainer& keys);
+    KeyReleaseEvent(const KeyContainer& keys, int key);
 };
 
 struct KeyRepeatEvent : KeyEvent {
-    KeyRepeatEvent(const KeyContainer& keys);
+    KeyRepeatEvent(const KeyContainer& keys, int action);
 };
 
 template<>
@@ -55,5 +56,6 @@ inline std::ostream& operator<<(std::ostream& os, const KeyEvent& event) {
             break;
         }
     }
+    os << " key:" << event.key << " action:" << event.action;
     return os << "}";
 }

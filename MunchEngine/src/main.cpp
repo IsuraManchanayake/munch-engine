@@ -1,4 +1,4 @@
-#include <iostream>
+#include "Config/Config.h"
 
 #include "App/App.h"
 #include "Window/MainWindow.h"
@@ -13,7 +13,6 @@ int main() {
 
     while(!app.shouldClose()) {
         app.pollEvents();
-
         app.update();
     }
     return 0;

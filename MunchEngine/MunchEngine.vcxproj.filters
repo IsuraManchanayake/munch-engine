@@ -16,7 +16,23 @@
     <ClCompile Include="src\Event\Types\KeyEvent.cpp" />
     <ClCompile Include="src\Event\Types\MouseMoveEvent.cpp" />
     <ClCompile Include="src\Event\Types\MousePressEvent.cpp" />
-    <ClCompile Include="src\Layer\TestLayer.cpp" />
+    <ClCompile Include="src\Graphics\Mesh.cpp" />
+    <ClCompile Include="src\Graphics\Shader.cpp" />
+    <ClCompile Include="src\Graphics\Texture.cpp" />
+    <ClCompile Include="src\Layer\Types\TestLayer.cpp" />
+    <ClCompile Include="src\Graphics\Lights\DirectionalLight.cpp" />
+    <ClCompile Include="src\Graphics\Lights\PointLight.cpp" />
+    <ClCompile Include="src\Graphics\Lights\SpotLight.cpp" />
+    <ClCompile Include="src\Graphics\ShadowMaps\DirectionalShadowMap.cpp" />
+    <ClCompile Include="src\Graphics\ShadowMaps\OmniDirectionalShadowMap.cpp" />
+    <ClCompile Include="src\Graphics\Camera.cpp" />
+    <ClCompile Include="src\Graphics\Entity.cpp" />
+    <ClCompile Include="src\Graphics\Material.cpp" />
+    <ClCompile Include="src\Graphics\Model.cpp" />
+    <ClCompile Include="src\Graphics\Scene.cpp" />
+    <ClCompile Include="src\Graphics\SkyBox.cpp" />
+    <ClCompile Include="src\Layer\Types\GraphicLayer.cpp" />
+    <ClCompile Include="src\Event\Types\WindowResizeEvent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\App\App.h" />
@@ -33,6 +49,26 @@
     <ClInclude Include="src\Event\Types\KeyEvent.h" />
     <ClInclude Include="src\Event\Types\MouseMoveEvent.h" />
     <ClInclude Include="src\Event\Types\MousePressEvent.h" />
-    <ClInclude Include="src\Layer\TestLayer.h" />
+    <ClInclude Include="src\Config\Config.h" />
+    <ClInclude Include="src\Graphics\Drawable.h" />
+    <ClInclude Include="src\Graphics\Entity.h" />
+    <ClInclude Include="src\Graphics\Mesh.h" />
+    <ClInclude Include="src\Graphics\Resource.h" />
+    <ClInclude Include="src\Graphics\Shader.h" />
+    <ClInclude Include="src\Graphics\stb_image.h" />
+    <ClInclude Include="src\Graphics\Texture.h" />
+    <ClInclude Include="src\Layer\Types\TestLayer.h" />
+    <ClInclude Include="src\Graphics\Lights\DirectionalLight.h" />
+    <ClInclude Include="src\Graphics\Lights\PointLight.h" />
+    <ClInclude Include="src\Graphics\Lights\SpotLight.h" />
+    <ClInclude Include="src\Graphics\ShadowMaps\DirectionalShadowMap.h" />
+    <ClInclude Include="src\Graphics\ShadowMaps\OmniDirectionalShadowMap.h" />
+    <ClInclude Include="src\Graphics\Camera.h" />
+    <ClInclude Include="src\Graphics\Material.h" />
+    <ClInclude Include="src\Graphics\Model.h" />
+    <ClInclude Include="src\Graphics\Scene.h" />
+    <ClInclude Include="src\Graphics\SkyBox.h" />
+    <ClInclude Include="src\Layer\Types\GraphicLayer.h" />
+    <ClInclude Include="src\Event\Types\WindowResizeEvent.h" />
   </ItemGroup>
 </Project>

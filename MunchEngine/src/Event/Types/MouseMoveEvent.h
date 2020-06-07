@@ -7,7 +7,6 @@
 
 struct MouseMoveEvent : Event {
     MouseMoveEvent(float x, float y, float dx, float dy);
-    ~MouseMoveEvent();
 
     float x;
     float y;

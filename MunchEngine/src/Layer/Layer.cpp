@@ -4,8 +4,8 @@
 
 #include <functional>
 
-Layer::Layer(std::string name)
-    : name(std::move(name)) {
+Layer::Layer(std::string name, int width, int height)
+    : name(std::move(name)), width(width), height(height) {
 }
 
 Layer::~Layer() {
@@ -44,4 +44,16 @@ bool Layer::onKeyRelease(KeyReleaseEvent& event) {
 bool Layer::onKeyRepeat(KeyRepeatEvent& event) {
     Logger::info(event);
     return true;
+}
+
+bool Layer::onWindowResize(WindowResizeEvent& event) {
+    width = event.width;
+    height = event.height;
+    return false; // Should propagate to all layers
+}
+
+void Layer::setup() {
+}
+
+void Layer::update() {
 }

@@ -18,8 +18,12 @@ struct AbstractWindow {
     void swapBuffers();
     void setFocus();
     void setCurrentContext();
+    void setupLayers();
     virtual void setup() = 0;
+    void setupWindow();
     virtual void update() = 0;
+    void updateLayers();
+    void updateWindow();
     void handleEvent(Event& event);
     template<typename LayerType, typename... Args>
     LayerType* addLayer(Args&& ...args);
@@ -43,6 +47,7 @@ struct AbstractWindow {
     static void handleMouseMove(GLFWwindow* glfwWindow, double posX, double posY);
     static void handleMouseButton(GLFWwindow* glfwWindow, int button, int action, int mods);
     static void handleKeys(GLFWwindow* glfwWindow, int key, int code, int action, int mode);
+    static void handleWindowResize(GLFWwindow* glfwWindow, int width, int height);
     void createCallbacks();
 };
 

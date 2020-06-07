@@ -5,7 +5,6 @@
 
 struct MousePressEvent : Event {
     MousePressEvent(int button, int action, int mods);
-    ~MousePressEvent();
 
     int button;
     int action;

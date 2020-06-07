@@ -2,8 +2,8 @@
 
 #include "Core/Logger.h"
 
-TestLayer::TestLayer(std::string name) 
-    : Layer(std::move(name)) {
+TestLayer::TestLayer(std::string name, int width, int height) 
+    : Layer(std::move(name), width, height) {
 }
 
 bool TestLayer::onMouseMove(MouseMoveEvent& event) {

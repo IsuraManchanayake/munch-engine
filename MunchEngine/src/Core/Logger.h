@@ -1,7 +1,9 @@
 #pragma once
 
 #include <iostream>
+#include <deque>
 #include <Windows.h>
+#include <thread>
 
 #include "Common.h"
 
@@ -38,9 +40,28 @@
  * 
  */
 
-struct Logger {
-    static WORD consoleAttribs;
+enum class LogLevel {
+    None = 0,
+    Trace = 0x08,
+    Debug = 0x0f,
+    Info = 0x0a,
+    Warn = 0x0e,
+    Error = 0x0c
+};
 
+struct LoggerImpl {
+    LoggerImpl();
+
+    std::pair<LogLevel, std::string> pop();
+    void enque(LogLevel level, std::string line);
+
+    std::deque<std::pair<LogLevel, std::string>> queue;
+};
+
+struct Logger {
+    static void init();
+    static void stop();
+    
     template<typename ...Args>
     static void trace(Args&&... args);
     template<typename ...Args>
@@ -53,45 +74,35 @@ struct Logger {
     static void error(Args&&... args);
 
     static std::string currentTime();
+
+    static WORD consoleAttribs;
+    static LoggerImpl logger;
+    static bool enabled;
+    static std::thread loggerThread;
 };
 
 // ================ Template definitions ================
 template<typename ...Args>
 inline void Logger::trace(Args&&... args) {
-    setConsoleColor(&consoleAttribs, 0x08);
-    std::cout << currentTime() << " [TRACE] ";
-    std::cout << cat(std::forward<Args>(args)...) << '\n';
-    resetConsoleColor(consoleAttribs);
+    logger.enque(LogLevel::Trace, cat(currentTime(), " [TRACE] ", std::forward<Args>(args)...));
 }
 
 template<typename ...Args>
 inline void Logger::debug(Args&&... args) {
-    setConsoleColor(&consoleAttribs, 0x0f);
-    std::cout << currentTime() << " [DEBUG] ";
-    std::cout << cat(std::forward<Args>(args)...) << '\n';
-    resetConsoleColor(consoleAttribs);
+    logger.enque(LogLevel::Debug, cat(currentTime(), " [DEBUG] ", std::forward<Args>(args)...));
 }
 
 template<typename ...Args>
 inline void Logger::info(Args&&... args) {
-    setConsoleColor(&consoleAttribs, 0x0a);
-    std::cout << currentTime() << " [INFO]  ";
-    std::cout << cat(std::forward<Args>(args)...) << '\n';
-    resetConsoleColor(consoleAttribs);
+    logger.enque(LogLevel::Info, cat(currentTime(), " [INFO]  ", std::forward<Args>(args)...));
 }
 
 template<typename ...Args>
 inline void Logger::warn(Args&&... args) {
-    setConsoleColor(&consoleAttribs, 0x0e);
-    std::cout << currentTime() << " [WARN]  ";
-    std::cout << cat(std::forward<Args>(args)...) << '\n';
-    resetConsoleColor(consoleAttribs);
+    logger.enque(LogLevel::Warn, cat(currentTime(), " [WARN]  ", std::forward<Args>(args)...));
 }
 
 template<typename ...Args>
 inline void Logger::error(Args&&... args) {
-    setConsoleColor(&consoleAttribs, 0x0c);
-    std::cout << currentTime() << " [ERROR] ";
-    std::cout << cat(std::forward<Args>(args)...) << '\n';
-    resetConsoleColor(consoleAttribs);
+    logger.enque(LogLevel::Error, cat(currentTime(), " [ERROR] ", std::forward<Args>(args)...));
 }

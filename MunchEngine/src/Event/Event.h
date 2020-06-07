@@ -6,7 +6,8 @@ struct Event {
     enum class Type {
         None = 0,
         MouseMove, MousePress,
-        KeyPress, KeyRelease, KeyRepeat 
+        KeyPress, KeyRelease, KeyRepeat,
+        WindowResize
     };
 
     Event();

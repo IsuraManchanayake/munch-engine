@@ -3,7 +3,7 @@
 #include "Layer/Layer.h"
 
 struct TestLayer : Layer {
-    TestLayer(std::string name);
+    TestLayer(std::string name, int width, int height);
 
     bool onMouseMove(MouseMoveEvent& event) override;
     bool onMousePress(MousePressEvent& event) override;

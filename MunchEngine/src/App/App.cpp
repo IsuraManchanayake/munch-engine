@@ -6,6 +6,7 @@ App::App()
 }
 
 App::~App() {
+    Logger::stop();
     for(const auto& window : windows) {
         delete window;
     }
@@ -26,14 +27,15 @@ void App::pollEvents() {
 
 void App::setup() {
     Physics::init();
+    Logger::init();
     for(auto& window : windows) {
-        window->setup();
+        window->setupWindow();
     }
 }
 
 void App::update() {
     Physics::update();
     for(auto& window : windows) {
-        window->update();
+        window->updateWindow();
     }
 }
