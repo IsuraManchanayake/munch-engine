@@ -8,9 +8,9 @@ AbstractWindow::AbstractWindow()
       posX(100), posY(100), bufWidth(), bufHeight(), mouse(), keys() {
 }
 
-AbstractWindow::AbstractWindow(GLuint width, GLuint height, GLuint posX, GLuint posY) 
+AbstractWindow::AbstractWindow(GLuint width, GLuint height, GLuint posX, GLuint posY, std::string title) 
     : window(nullptr), width(width), height(height),
-      posX(posX), posY(posY),bufWidth(), bufHeight(), mouse(), keys() {
+      posX(posX), posY(posY),bufWidth(), bufHeight(), mouse(), keys(), title(std::move(title)) {
 }
 
 AbstractWindow::~AbstractWindow() {
@@ -21,7 +21,7 @@ AbstractWindow::~AbstractWindow() {
 }
 
 void AbstractWindow::init() {
-    window = glfwCreateWindow(width, height, "Hello OpenGL", NULL, NULL);
+    window = glfwCreateWindow(width, height, title.c_str(), NULL, NULL);
     glfwSetWindowPos(window, posX, posY);
     if(!window) {
         Logger::error("GLFW Window creation failed");

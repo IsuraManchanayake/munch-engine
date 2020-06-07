@@ -18,101 +18,35 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="src\App\App.cpp" />
-    <ClCompile Include="src\Core\Color.cpp" />
-    <ClCompile Include="src\Core\Common.cpp" />
-    <ClCompile Include="src\Core\Logger.cpp" />
-    <ClCompile Include="src\Core\Math.cpp" />
-    <ClCompile Include="src\Event\Event.cpp" />
-    <ClCompile Include="src\Event\EventDispatcher.cpp" />
-    <ClCompile Include="src\Event\Types\KeyEvent.cpp" />
-    <ClCompile Include="src\Event\Types\MouseMoveEvent.cpp" />
-    <ClCompile Include="src\Event\Types\MousePressEvent.cpp" />
-    <ClCompile Include="src\Event\Types\WindowResizeEvent.cpp" />
-    <ClCompile Include="src\Graphics\Camera.cpp" />
-    <ClCompile Include="src\Graphics\Entity.cpp" />
-    <ClCompile Include="src\Graphics\Lights\DirectionalLight.cpp" />
-    <ClCompile Include="src\Graphics\Lights\PointLight.cpp" />
-    <ClCompile Include="src\Graphics\Lights\SpotLight.cpp" />
-    <ClCompile Include="src\Graphics\Material.cpp" />
-    <ClCompile Include="src\Graphics\Mesh.cpp" />
-    <ClCompile Include="src\Graphics\Model.cpp" />
-    <ClCompile Include="src\Graphics\Scene.cpp" />
-    <ClCompile Include="src\Graphics\Shader.cpp" />
-    <ClCompile Include="src\Graphics\ShadowMaps\DirectionalShadowMap.cpp" />
-    <ClCompile Include="src\Graphics\ShadowMaps\OmniDirectionalShadowMap.cpp" />
-    <ClCompile Include="src\Graphics\SkyBox.cpp" />
-    <ClCompile Include="src\Graphics\Texture.cpp" />
-    <ClCompile Include="src\Layer\Layer.cpp" />
-    <ClCompile Include="src\Physics\Physics.cpp" />
-    <ClCompile Include="src\Window\AbstractWindow.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="src\App\App.h" />
-    <ClInclude Include="src\Config\Config.h" />
-    <ClInclude Include="src\Core\Color.h" />
-    <ClInclude Include="src\Core\Common.h" />
-    <ClInclude Include="src\Core\Logger.h" />
-    <ClInclude Include="src\Core\Math.h" />
-    <ClInclude Include="src\Event\Event.h" />
-    <ClInclude Include="src\Event\EventDispatcher.h" />
-    <ClInclude Include="src\Event\Types\KeyEvent.h" />
-    <ClInclude Include="src\Event\Types\MouseMoveEvent.h" />
-    <ClInclude Include="src\Event\Types\MousePressEvent.h" />
-    <ClInclude Include="src\Event\Types\WindowResizeEvent.h" />
-    <ClInclude Include="src\Graphics\Camera.h" />
-    <ClInclude Include="src\Graphics\Drawable.h" />
-    <ClInclude Include="src\Graphics\Entity.h" />
-    <ClInclude Include="src\Graphics\Lights\DirectionalLight.h" />
-    <ClInclude Include="src\Graphics\Lights\PointLight.h" />
-    <ClInclude Include="src\Graphics\Lights\SpotLight.h" />
-    <ClInclude Include="src\Graphics\Material.h" />
-    <ClInclude Include="src\Graphics\Mesh.h" />
-    <ClInclude Include="src\Graphics\Model.h" />
-    <ClInclude Include="src\Graphics\Resource.h" />
-    <ClInclude Include="src\Graphics\Scene.h" />
-    <ClInclude Include="src\Graphics\Shader.h" />
-    <ClInclude Include="src\Graphics\ShadowMaps\DirectionalShadowMap.h" />
-    <ClInclude Include="src\Graphics\ShadowMaps\OmniDirectionalShadowMap.h" />
-    <ClInclude Include="src\Graphics\SkyBox.h" />
-    <ClInclude Include="src\Graphics\stb_image.h" />
-    <ClInclude Include="src\Graphics\Texture.h" />
-    <ClInclude Include="src\Layer\Layer.h" />
-    <ClInclude Include="src\Physics\Physics.h" />
-    <ClInclude Include="src\Window\AbstractWindow.h" />
-    <ClInclude Include="src\Window\EditorWindow.h" />
-    <ClInclude Include="src\Window\MainWindow.h" />
-  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
-    <ProjectGuid>{3767472d-2648-49f3-9d6f-d44b117629f1}</ProjectGuid>
+    <ProjectGuid>{ae55ff4f-03c1-4fb6-87cb-68c5d1734d51}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>MunchEngine</RootNamespace>
+    <RootNamespace>MunchTest</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -154,9 +88,9 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>D:\Work\cg\OpenGL\ExternalLibs\glm;D:\Work\cg\OpenGL\ExternalLibs\assimp\include;D:\Work\cg\OpenGL\ExternalLibs\glfw\include;D:\Work\cg\OpenGL\ExternalLibs\glew\include;D:\Work\cg\OpenGL\MunchEngine\MunchEngine\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Work\cg\OpenGL\ExternalLibs\glm;D:\Work\cg\OpenGL\MunchEngine\MunchTest\src;D:\Work\cg\OpenGL\ExternalLibs\assimp\include;D:\Work\cg\OpenGL\ExternalLibs\glfw\include;D:\Work\cg\OpenGL\ExternalLibs\glew\include;$(SolutionDir)MunchEngine/src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -172,9 +106,9 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>D:\Work\cg\OpenGL\ExternalLibs\glm;D:\Work\cg\OpenGL\ExternalLibs\assimp\include;D:\Work\cg\OpenGL\ExternalLibs\glfw\include;D:\Work\cg\OpenGL\ExternalLibs\glew\include;D:\Work\cg\OpenGL\MunchEngine\MunchEngine\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Work\cg\OpenGL\ExternalLibs\glm;D:\Work\cg\OpenGL\MunchEngine\MunchTest\src;D:\Work\cg\OpenGL\ExternalLibs\assimp\include;D:\Work\cg\OpenGL\ExternalLibs\glfw\include;D:\Work\cg\OpenGL\ExternalLibs\glew\include;$(SolutionDir)MunchEngine/src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -192,9 +126,9 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>D:\Work\cg\OpenGL\ExternalLibs\glm;D:\Work\cg\OpenGL\ExternalLibs\assimp\include;D:\Work\cg\OpenGL\ExternalLibs\glfw\include;D:\Work\cg\OpenGL\ExternalLibs\glew\include;D:\Work\cg\OpenGL\MunchEngine\MunchEngine\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Work\cg\OpenGL\ExternalLibs\glm;D:\Work\cg\OpenGL\MunchEngine\MunchTest\src;D:\Work\cg\OpenGL\ExternalLibs\assimp\include;D:\Work\cg\OpenGL\ExternalLibs\glfw\include;D:\Work\cg\OpenGL\ExternalLibs\glew\include;$(SolutionDir)MunchEngine/src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -214,9 +148,9 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>D:\Work\cg\OpenGL\ExternalLibs\glm;D:\Work\cg\OpenGL\ExternalLibs\assimp\include;D:\Work\cg\OpenGL\ExternalLibs\glfw\include;D:\Work\cg\OpenGL\ExternalLibs\glew\include;D:\Work\cg\OpenGL\MunchEngine\MunchEngine\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Work\cg\OpenGL\ExternalLibs\glm;D:\Work\cg\OpenGL\MunchEngine\MunchTest\src;D:\Work\cg\OpenGL\ExternalLibs\assimp\include;D:\Work\cg\OpenGL\ExternalLibs\glfw\include;D:\Work\cg\OpenGL\ExternalLibs\glew\include;$(SolutionDir)MunchEngine/src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -228,6 +162,39 @@
       <AdditionalDependencies>glew32.lib;opengl32.lib;glfw3.lib;assimp-vc142-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
+  <ItemGroup>
+    <None Include="Shaders\debug_quad.frag.glsl" />
+    <None Include="Shaders\debug_quad.vert.glsl" />
+    <None Include="Shaders\directional_shadow_map.frag.glsl" />
+    <None Include="Shaders\directional_shadow_map.vert.glsl" />
+    <None Include="Shaders\guide.frag.glsl" />
+    <None Include="Shaders\guide.vert.glsl" />
+    <None Include="Shaders\moving.frag.glsl" />
+    <None Include="Shaders\moving.vert.glsl" />
+    <None Include="Shaders\omni_shadow_map.frag.glsl" />
+    <None Include="Shaders\omni_shadow_map.geom.glsl" />
+    <None Include="Shaders\omni_shadow_map.vert.glsl" />
+    <None Include="Shaders\skybox.frag.glsl" />
+    <None Include="Shaders\skybox.vert.glsl" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Layer\GraphicLayer.cpp" />
+    <ClCompile Include="src\Layer\TestLayer.cpp" />
+    <ClCompile Include="src\MunchTest.cpp" />
+    <ClCompile Include="src\Window\EditorWindow.cpp" />
+    <ClCompile Include="src\Window\MainWindow.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MunchEngine\MunchEngine.vcxproj">
+      <Project>{3767472d-2648-49f3-9d6f-d44b117629f1}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\Layer\GraphicLayer.h" />
+    <ClInclude Include="src\Layer\TestLayer.h" />
+    <ClInclude Include="src\Window\EditorWindow.h" />
+    <ClInclude Include="src\Window\MainWindow.h" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

@@ -1,12 +1,9 @@
 #include "Window/MainWindow.h"
-#include "Physics/Physics.h"
-#include "Core/Color.h"
 #include "Layer/Layer.h"
-#include "Layer/Types/TestLayer.h"
-#include "Layer/Types/GraphicLayer.h"
+#include "Layer/GraphicLayer.h"
 
-MainWindow::MainWindow(GLuint width, GLuint height, GLuint posX, GLuint posY)
-    : AbstractWindow(width, height, posX, posY) {
+MainWindow::MainWindow(GLuint width, GLuint height, GLuint posX, GLuint posY, std::string title)
+    : AbstractWindow(width, height, posX, posY, title) {
 }
 
 MainWindow::~MainWindow() {

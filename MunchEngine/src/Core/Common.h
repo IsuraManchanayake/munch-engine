@@ -22,15 +22,15 @@ std::string readFile(const std::string& path);
 template<typename T, size_t N> constexpr size_t size(const T(&array)[N]);
 
 // String
-template<typename T, typename ...Args> std::string cat(T&& first, Args&&... args);
+template<typename ...Args> std::string cat(Args&&... args);
 void split(std::vector<std::string>& results, const std::string& input, char character);
 template <typename T> T lexical_cast(const std::string& input);
 template <typename T, typename ConstIter> T lexical_cast(ConstIter first, ConstIter last);
 template<typename ToType> void split_cast(std::vector<ToType>& results, const std::string& input, char character);
 
 // ================ Template definitions ================
-template<typename T, typename ...Args>
-inline std::string cat(T&& first, Args&&... args) {
+template<typename ...Args>
+inline std::string cat(Args&&... args) {
     std::ostringstream oss;
     (oss << ... << args);
     return oss.str();

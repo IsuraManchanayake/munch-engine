@@ -5,7 +5,8 @@
 #include <Windows.h>
 #include <thread>
 
-#include "Common.h"
+#include "Core/Common.h"
+#include "Config/Config.h"
 
 /**
  * 
@@ -84,25 +85,35 @@ struct Logger {
 // ================ Template definitions ================
 template<typename ...Args>
 inline void Logger::trace(Args&&... args) {
+#if LOG_LEVEL <= LOG_TRACE
     logger.enque(LogLevel::Trace, cat(currentTime(), " [TRACE] ", std::forward<Args>(args)...));
+#endif
 }
 
 template<typename ...Args>
 inline void Logger::debug(Args&&... args) {
+#if LOG_LEVEL <= LOG_DEBUG
     logger.enque(LogLevel::Debug, cat(currentTime(), " [DEBUG] ", std::forward<Args>(args)...));
+#endif
 }
 
 template<typename ...Args>
 inline void Logger::info(Args&&... args) {
+#if LOG_LEVEL <= LOG_INFO
     logger.enque(LogLevel::Info, cat(currentTime(), " [INFO]  ", std::forward<Args>(args)...));
+#endif
 }
 
 template<typename ...Args>
 inline void Logger::warn(Args&&... args) {
+#if LOG_LEVEL <= LOG_WARN
     logger.enque(LogLevel::Warn, cat(currentTime(), " [WARN]  ", std::forward<Args>(args)...));
+#endif
 }
 
 template<typename ...Args>
 inline void Logger::error(Args&&... args) {
+#if LOG_LEVEL <= LOG_ERROR
     logger.enque(LogLevel::Error, cat(currentTime(), " [ERROR] ", std::forward<Args>(args)...));
+#endif
 }

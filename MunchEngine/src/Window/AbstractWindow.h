@@ -10,7 +10,7 @@
 
 struct AbstractWindow {
     AbstractWindow();
-    AbstractWindow(GLuint width, GLuint height, GLuint posX, GLuint posY);
+    AbstractWindow(GLuint width, GLuint height, GLuint posX, GLuint posY, std::string title);
     virtual ~AbstractWindow();
 
     void init();
@@ -42,6 +42,7 @@ struct AbstractWindow {
         Mouse();
     } mouse;
     KeyContainer keys;
+    std::string title;
     std::vector<Layer*> layers;
 
     static void handleMouseMove(GLFWwindow* glfwWindow, double posX, double posY);
