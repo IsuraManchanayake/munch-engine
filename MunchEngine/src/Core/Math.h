@@ -9,7 +9,11 @@ glm::vec3 randvec3();
 
 glm::vec3 randunitvec3();
 
+float perlin2D(float x, float y);
+
 float mapf(float x, float a, float b, float p, float q);
+
+float lerpf(float a, float b, float x);
 
 template<typename T>
 T clamp(const T& x, const T& a, const T& b);
