@@ -29,7 +29,6 @@
     <ClCompile Include="src\Graphics\Scene.cpp" />
     <ClCompile Include="src\Graphics\SkyBox.cpp" />
     <ClCompile Include="src\Event\Types\WindowResizeEvent.cpp" />
-    <ClCompile Include="src\UI\AbstractUI.cpp" />
     <ClCompile Include="src\UI\UIElement.cpp" />
     <ClCompile Include="src\UI\UILayer.cpp" />
     <ClCompile Include="src\UI\UIMesh.cpp" />

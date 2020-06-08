@@ -46,7 +46,6 @@
     <ClCompile Include="src\Graphics\Texture.cpp" />
     <ClCompile Include="src\Layer\Layer.cpp" />
     <ClCompile Include="src\Physics\Physics.cpp" />
-    <ClCompile Include="src\UI\AbstractUI.cpp" />
     <ClCompile Include="src\UI\Types\PaneUI.cpp" />
     <ClCompile Include="src\UI\UIElement.cpp" />
     <ClCompile Include="src\UI\UILayer.cpp" />

@@ -1,7 +1,7 @@
 #include "UI/UIRoot.h"
 
-UIRoot::UIRoot(int posX, int posY, int width, int height)
-    : AbstractUI<UIElement>(posX, posY, width, height), modelMat(1.f) {
+UIRoot::UIRoot(int posX, int posY, int width, int height, UILayer* layer)
+    : AbstractUI<UIElement>(posX, posY, width, height, layer), modelMat(1.f) {
 }
 
 UIRoot::~UIRoot() {
@@ -29,4 +29,19 @@ void UIRoot::mouseInside() {
 }
 
 void UIRoot::mouseLeave() {
+}
+
+void UIRoot::mousePress() {
+}
+
+void UIRoot::handleMouseMove(MouseMoveEvent& event) {
+    for(auto& child : children) {
+        child->handleMouseMove(event);
+    }
+}
+
+void UIRoot::handleMousePress(MousePressEvent& event) {
+    for(auto& child : children) {
+        child->handleMousePress(event);
+    }
 }

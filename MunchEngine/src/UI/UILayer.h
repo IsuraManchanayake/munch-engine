@@ -9,14 +9,16 @@ struct UILayer : Layer {
 
     void setup() override;
     void update() override;
-    // bool onMouseMove(MouseMoveEvent& event) override;
-    // bool onWindowResize(WindowResizeEvent& event) override;
+    bool onMouseMove(MouseMoveEvent& event) override;
+    bool onMousePress(MousePressEvent& event) override;
+    bool onWindowResize(WindowResizeEvent& event) override;
 
     struct Mouse {
-        float x, y, dx, dy;
-        Mouse() : x(), y(), dx(), dy() {}
+        float x, y, dx, dy, button, action;
+        Mouse() : x(), y(), dx(), dy(), button(), action() {}
     } mouse;
 
     Shader shader;
     UIRoot root;
+    unsigned currentDraggingUIElementId;
 };

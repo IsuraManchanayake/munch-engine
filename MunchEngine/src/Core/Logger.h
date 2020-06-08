@@ -1,12 +1,13 @@
 #pragma once
 
+#include "Core/Common.h"
+#include "Config/Config.h"
+
 #include <iostream>
 #include <deque>
 #include <Windows.h>
 #include <thread>
-
-#include "Core/Common.h"
-#include "Config/Config.h"
+#include <mutex>
 
 /**
  * 
@@ -50,13 +51,14 @@ enum class LogLevel {
     Error = 0x0c
 };
 
-struct LoggerImpl {
-    LoggerImpl();
+struct LogQueue {
+    LogQueue();
 
     std::pair<LogLevel, std::string> pop();
     void enque(LogLevel level, std::string line);
 
     std::deque<std::pair<LogLevel, std::string>> queue;
+    mutable std::mutex queueMutex;
 };
 
 struct Logger {
@@ -77,7 +79,7 @@ struct Logger {
     static std::string currentTime();
 
     static WORD consoleAttribs;
-    static LoggerImpl logger;
+    static LogQueue logQueue;
     static bool enabled;
     static std::thread loggerThread;
 };
@@ -100,20 +102,20 @@ inline void Logger::debug(Args&&... args) {
 template<typename ...Args>
 inline void Logger::info(Args&&... args) {
 #if LOG_LEVEL <= LOG_INFO
-    logger.enque(LogLevel::Info, cat(currentTime(), " [INFO]  ", std::forward<Args>(args)...));
+    logQueue.enque(LogLevel::Info, cat(currentTime(), " [INFO]  ", std::forward<Args>(args)...));
 #endif
 }
 
 template<typename ...Args>
 inline void Logger::warn(Args&&... args) {
 #if LOG_LEVEL <= LOG_WARN
-    logger.enque(LogLevel::Warn, cat(currentTime(), " [WARN]  ", std::forward<Args>(args)...));
+    logQueue.enque(LogLevel::Warn, cat(currentTime(), " [WARN]  ", std::forward<Args>(args)...));
 #endif
 }
 
 template<typename ...Args>
 inline void Logger::error(Args&&... args) {
 #if LOG_LEVEL <= LOG_ERROR
-    logger.enque(LogLevel::Error, cat(currentTime(), " [ERROR] ", std::forward<Args>(args)...));
+    logQueue.enque(LogLevel::Error, cat(currentTime(), " [ERROR] ", std::forward<Args>(args)...));
 #endif
 }

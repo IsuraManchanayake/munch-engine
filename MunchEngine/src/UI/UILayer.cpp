@@ -2,14 +2,15 @@
 #include "UI/Types/PaneUI.h"
 
 UILayer::UILayer(std::string name, int width, int height) 
-    : Layer(name, width, height), shader(), root(0, 0, width, height) {
+    : Layer(name, width, height), shader(), root(0, 0, width, height, this), currentDraggingUIElementId(0) {
 }
 
 void UILayer::setup() {
     shader.create("Shaders/editor.vert.glsl", "Shaders/editor.frag.glsl");
     shader.use();
     shader.seti1("theTexture", 0);
-    PaneUI* pane = root.addUIElement<PaneUI>(100, 100, 200, 200);
+    PaneUI* pane1 = root.addUIElement<PaneUI>(100, 100, 200, 200);
+    PaneUI* pane2 = pane1->addUIElement<PaneUI>(200, 200, 200, 300);
     root.setup();
 }
 
@@ -20,4 +21,29 @@ void UILayer::update() {
 
     shader.use();
     root.render(shader.getUniformLocation("model"));
+}
+
+bool UILayer::onMouseMove(MouseMoveEvent& event) {
+    mouse.x = event.x;
+    mouse.y = event.y;
+    mouse.dx = event.dx;
+    mouse.dy = event.dy;
+    root.handleMouseMove(event);
+    return false;
+}
+
+bool UILayer::onMousePress(MousePressEvent& event) {
+    mouse.button = event.button;
+    mouse.action = event.action;
+    root.handleMousePress(event);
+    return false;
+}
+
+bool UILayer::onWindowResize(WindowResizeEvent& event) {
+    width = event.width;
+    height = event.height;
+    root.width = width;
+    root.height = height;
+    root.calcModel();
+    return false;
 }
