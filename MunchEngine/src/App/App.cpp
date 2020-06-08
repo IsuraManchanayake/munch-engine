@@ -1,8 +1,10 @@
 #include "App/App.h"
 #include "Physics/Physics.h"
 
+const unsigned App::fpsSamples = 100;
+
 App::App() 
-    : windows() {
+    : windows(), fpsCounterTime() {
 }
 
 App::~App() {
@@ -35,7 +37,12 @@ void App::setup() {
 
 void App::update() {
     Physics::update();
+    fpsCounterTime += Physics::dt;
     for(auto& window : windows) {
         window->updateWindow();
+    }
+    if(Physics::frames % fpsSamples == 0) {
+        Logger::info(((int)(100 * (fpsSamples / fpsCounterTime))) / 100.0f, " fps");
+        fpsCounterTime = 0.f;
     }
 }

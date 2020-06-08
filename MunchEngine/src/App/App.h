@@ -19,6 +19,8 @@ struct App {
     void update();
     
     std::vector<AbstractWindow*> windows;
+    float fpsCounterTime;
+    static const unsigned fpsSamples;
 };
 
 // ============== Template implementations

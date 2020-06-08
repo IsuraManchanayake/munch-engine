@@ -12,6 +12,7 @@ struct GraphicLayer : Layer {
     bool onKeyRelease(KeyReleaseEvent& event) override;
     bool onKeyRepeat(KeyRepeatEvent& event) override;
     bool onMouseMove(MouseMoveEvent& event) override;
+    bool onWindowResize(WindowResizeEvent& event) override;
 
     Scene scene;
     KeyContainer keys;

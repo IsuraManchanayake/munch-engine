@@ -7,4 +7,4 @@
 #define LOG_INFO  2
 #define LOG_WARN  3
 #define LOG_ERROR 4
-#define LOG_LEVEL LOG_ERROR
+#define LOG_LEVEL LOG_INFO

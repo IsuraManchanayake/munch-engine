@@ -29,6 +29,12 @@
     <ClCompile Include="src\Graphics\Scene.cpp" />
     <ClCompile Include="src\Graphics\SkyBox.cpp" />
     <ClCompile Include="src\Event\Types\WindowResizeEvent.cpp" />
+    <ClCompile Include="src\UI\AbstractUI.cpp" />
+    <ClCompile Include="src\UI\UIElement.cpp" />
+    <ClCompile Include="src\UI\UILayer.cpp" />
+    <ClCompile Include="src\UI\UIMesh.cpp" />
+    <ClCompile Include="src\UI\UIRoot.cpp" />
+    <ClCompile Include="src\UI\Types\PaneUI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\App\App.h" />
@@ -65,5 +71,11 @@
     <ClInclude Include="src\Graphics\SkyBox.h" />
     <ClInclude Include="src\Event\Types\WindowResizeEvent.h" />
     <ClInclude Include="src\Window\EditorWindow.h" />
+    <ClInclude Include="src\UI\AbstractUI.h" />
+    <ClInclude Include="src\UI\UIElement.h" />
+    <ClInclude Include="src\UI\UILayer.h" />
+    <ClInclude Include="src\UI\UIMesh.h" />
+    <ClInclude Include="src\UI\UIRoot.h" />
+    <ClInclude Include="src\UI\Types\PaneUI.h" />
   </ItemGroup>
 </Project>

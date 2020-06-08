@@ -1,6 +1,7 @@
 #include "Layer/GraphicLayer.h"
-#include "Core/Color.h"
 #include "Physics/Physics.h"
+#include "Core/Color.h"
+#include "Core/Logger.h"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -233,3 +234,10 @@ bool GraphicLayer::onKeyRepeat(KeyRepeatEvent& event) {
     return false;
 }
 
+bool GraphicLayer::onWindowResize(WindowResizeEvent& event) {
+    width = event.width;
+    height = event.height;
+    glm::mat4 projection = glm::perspective(glm::radians(60.f), static_cast<float>(width) / height, 0.1f, 100.f);
+    scene.setProjection(projection);
+    return false;
+}

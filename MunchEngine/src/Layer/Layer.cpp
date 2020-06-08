@@ -19,6 +19,7 @@ void Layer::onEvent(Event& event) {
     dispatcher.dispatch<Event::Type::KeyPress>(std::bind(&Layer::onKeyPress, this, std::placeholders::_1));
     dispatcher.dispatch<Event::Type::KeyRelease>(std::bind(&Layer::onKeyRelease, this, std::placeholders::_1));
     dispatcher.dispatch<Event::Type::KeyRepeat>(std::bind(&Layer::onKeyRepeat, this, std::placeholders::_1));
+    dispatcher.dispatch<Event::Type::WindowResize>(std::bind(&Layer::onWindowResize, this, std::placeholders::_1));
 }
 
 bool Layer::onMouseMove(MouseMoveEvent& event) {
