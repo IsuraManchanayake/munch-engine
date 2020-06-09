@@ -171,3 +171,23 @@ Model Model::plane(glm::mat4 transform, Material material) {
     model.material = std::move(material);
     return model;
 }
+
+Model Model::terrain(glm::mat4 transform, Material material) {
+    auto pos = loadedObjects.find("terrain");
+    if(pos == loadedObjects.end()) {
+        Mesh mesh;
+        mesh.createTerrain();
+        Texture texture;
+        texture.create("Textures/white.tga");
+        Object* newObject = new Object;
+        newObject->meshes.push_back(mesh);
+        newObject->textures.push_back(texture);
+        newObject->meshToTex.push_back(0);
+        pos = loadedObjects.insert({"terrain", newObject}).first;
+    }
+    Model model;
+    model.object = pos->second;
+    model.transform = std::move(transform);
+    model.material = std::move(material);
+    return model;
+}

@@ -39,4 +39,5 @@ struct Model {
     static Model cube(glm::mat4 transform, Material material);
     static Model sphere(glm::mat4 transform, Material material);
     static Model plane(glm::mat4 transform, Material material);
+    static Model terrain(glm::mat4 transform, Material material);
 };

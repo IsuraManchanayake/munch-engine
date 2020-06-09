@@ -16,8 +16,14 @@ void GraphicLayer::setup() {
         mainShader.create("Shaders/moving.vert.glsl", "Shaders/moving.frag.glsl");
         scene.setMainShader(mainShader);
 
-        Material glassMaterial;
-        glassMaterial.set({1.0f, 1.0f, 1.0f,}, 16.0f, 1.0f, 0.f, 0.f);
+
+
+        Material plasticMaterial;
+        plasticMaterial.set({1.0f, 1.0f, 1.0f,}, 16.0f, 1.0f, 0.f, 0.f);
+        // Material glassMaterial;
+        // glassMaterial.set({1.0f, 1.0f, 1.0f,}, 16.0f, 1.0f, 0.f, 0.f);
+
+        // 9 Spheres
         // for (int i = -1; i <= 1; i++) {
         //     for (int j = -1; j <= 1; j++) {
         //         glm::mat4 transform(1.f);
@@ -25,13 +31,17 @@ void GraphicLayer::setup() {
         //         scene.addModel(Model::sphere(transform, glassMaterial));
         //     }
         // }
+
+        // Single sphere
         for (int i = 0; i <= 0; i++) {
             for (int j = 0; j <= 0; j++) {
                 glm::mat4 transform(1.f);
-                transform = glm::translate(transform, { 3.f * i, 1.f, 3.f * j });
-                scene.addModel(Model::sphere(transform, glassMaterial));
+                transform = glm::translate(transform, { 3.f * i, 0.f, 3.f * j });
+                scene.addModel(Model::sphere(transform, plasticMaterial));
             }
         }
+        
+        // External Model
         // for (int i = 0; i <= 0; i++) {
         //     for (int j = 0; j <= 0; j++) {
         //         glm::mat4 transform(1.f);
@@ -43,14 +53,11 @@ void GraphicLayer::setup() {
         //     }
         // }
 
-        Material plasticMaterial;
-        plasticMaterial.set({1.0f, 1.0f, 1.0f,}, 16.0f, 1.0f, 0.f, 0.f);
-
         glm::mat4 transform(1.f);
-        transform = glm::scale(transform, {100.f, 100.f, 100.f });
+        transform = glm::scale(transform, {100.f, 1.f, 100.f });
         transform = glm::rotate(transform, glm::radians(-90.0f), {1.0f, 0.0f, 0.0f});
         transform = glm::translate(transform, {-0.5f, -0.5f, 0.0f});
-        scene.addModel(Model::plane(transform, plasticMaterial));
+        scene.addModel(Model::terrain(transform, plasticMaterial));
 
         Camera camera(glm::vec3(1.f, 1.f, 1.f), glm::vec3(0.f, 1.f, 0.f), -90.f, 0.f, 2.f, 1.f);
         scene.setCamera(camera);
@@ -90,6 +97,14 @@ void GraphicLayer::setup() {
         }
 
         SkyBox skyBox;
+        // std::array<std::string, 6> images = {
+        //     "SkyBoxes/cupertin-lake_rt.tga",
+        //     "SkyBoxes/cupertin-lake_lf.tga",
+        //     "SkyBoxes/cupertin-lake_up.tga",
+        //     "SkyBoxes/cupertin-lake_dn.tga",
+        //     "SkyBoxes/cupertin-lake_bk.tga",
+        //     "SkyBoxes/cupertin-lake_ft.tga"
+        // };
         std::array<std::string, 6> images = {
             "SkyBoxes/cupertin-lake_rt.tga",
             "SkyBoxes/cupertin-lake_lf.tga",

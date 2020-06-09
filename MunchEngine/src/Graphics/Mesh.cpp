@@ -1,5 +1,6 @@
 #include "Graphics/Mesh.h"
 #include "Core/Common.h"
+#include "Core/Math.h"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/constants.hpp>
@@ -102,6 +103,133 @@ void Mesh::createPlane() {
         0,  1,  2,  2,  0,  3,
     };
     create(vertices, indices, size(vertices), size(indices));
+}
+
+
+// void Mesh::createTerrain() {
+//     static const unsigned subx = 50;
+//     static const unsigned suby = 50;
+
+//     static const GLfloat qv[] = {
+//     //    x    y    z     u    v    nx   ny   nz
+//         // z = 0
+//         0.f, 0.f, 0.f,  0.f, 0.f,  0.f, 0.f, 1.f,
+//         0.f, 1.f, 0.f,  0.f, 1.f,  0.f, 0.f, 1.f,
+//         1.f, 1.f, 0.f,  1.f, 1.f,  0.f, 0.f, 1.f,
+//         1.f, 0.f, 0.f,  1.f, 0.f,  0.f, 0.f, 1.f,
+//     };
+//     static const unsigned qi[] = {
+//         0,  1,  2,  2,  0,  3,
+//     };
+
+//     std::vector<GLfloat> vertices;
+//     std::vector<unsigned> indices;
+//     for(unsigned yy = 0; yy < suby; yy++) {
+//         for(unsigned xx = 0; xx < subx; xx++) {
+//             float x = static_cast<float>(xx) / subx;
+//             float y = static_cast<float>(yy) / suby;
+//             for(unsigned v = 0; v < 4; v++) {
+//                 unsigned s = v * 8;
+//                 // coords
+//                 float sx = x + qv[s + 0] / subx;
+//                 float sy = y + qv[s + 1] / suby;
+//                 float sz = qv[s + 2] + perlin2D(sx * 10, sy * 10);
+//                 vertices.insert(vertices.end(), { sx, sy, sz });
+//                 // uv
+//                 float su = sx;
+//                 float sv = sy;
+//                 vertices.insert(vertices.end(), { su, sv });
+//                 // norms
+//                 float nx = qv[s + 5];
+//                 float ny = qv[s + 6];
+//                 float nz = qv[s + 7];
+//                 vertices.insert(vertices.end(), { nx, ny, nz });
+//             }
+//             unsigned b = (xx + yy * subx) * 4;
+//             for(unsigned i = 0; i < size(qi); i++) {
+//                 indices.push_back(b + qi[i]);
+//             }
+//         }
+//     }
+
+//     create(vertices.data(), indices.data(), vertices.size(), indices.size());
+// }
+
+void Mesh::createTerrain() {
+    static const unsigned subx = 100;
+    static const unsigned suby = 100;
+
+    static const GLfloat qv[] = {
+    //    x    y    z     u    v    nx   ny   nz
+        // z = 0
+        0.f, 0.f, 0.f,  0.f, 0.f,  0.f, 0.f, 1.f,
+        0.f, 1.f, 0.f,  0.f, 1.f,  0.f, 0.f, 1.f,
+        1.f, 1.f, 0.f,  1.f, 1.f,  0.f, 0.f, 1.f,
+        1.f, 1.f, 0.f,  1.f, 1.f,  0.f, 0.f, 1.f,
+        1.f, 0.f, 0.f,  1.f, 0.f,  0.f, 0.f, 1.f,
+        0.f, 0.f, 0.f,  0.f, 0.f,  0.f, 0.f, 1.f,
+    };
+    static const unsigned qi[] = {
+        0,  1,  2,  3,  4,  5,
+    };
+
+    std::vector<GLfloat> vertices;
+    std::vector<unsigned> indices;
+    for(unsigned yy = 0; yy < suby; yy++) {
+        for(unsigned xx = 0; xx < subx; xx++) {
+            float x = static_cast<float>(xx) / subx;
+            float y = static_cast<float>(yy) / suby;
+            for(unsigned v = 0; v < 6; v++) {
+                unsigned s = v * 8;
+                // coords
+                float sx = x + qv[s + 0] / subx;
+                float sy = y + qv[s + 1] / suby;
+                float sz = qv[s + 2] + perlin2D(sx * 10, sy * 10);
+                vertices.insert(vertices.end(), { sx, sy, sz });
+                // uv
+                float su = sx;
+                float sv = sy;
+                vertices.insert(vertices.end(), { su, sv });
+                // norms
+                float nx = qv[s + 5];
+                float ny = qv[s + 6];
+                float nz = qv[s + 7];
+                vertices.insert(vertices.end(), { nx, ny, nz });
+            }
+            for(unsigned tr = 0; tr < 2; tr++) {
+                unsigned tr_ = tr * 3 * 8 + (xx + yy * subx) * size(qv);
+                float px = vertices[tr_ + 8 * 0 + 0 ];
+                float py = vertices[tr_ + 8 * 0 + 1 ];
+                float pz = vertices[tr_ + 8 * 0 + 2 ];
+                float qx = vertices[tr_ + 8 * 1 + 0 ];
+                float qy = vertices[tr_ + 8 * 1 + 1 ];
+                float qz = vertices[tr_ + 8 * 1 + 2 ];
+                float rx = vertices[tr_ + 8 * 2 + 0 ];
+                float ry = vertices[tr_ + 8 * 2 + 1 ];
+                float rz = vertices[tr_ + 8 * 2 + 2 ];
+                float ax = qx - px;
+                float ay = qy - py;
+                float az = qz - pz;
+                float bx = rx - px;
+                float by = ry - py;
+                float bz = rz - pz;
+                float nx = by * az - ay * bz;
+                float ny = ax * bz - bx * az;
+                float nz = bx * ay - ax * by;
+                for(unsigned ni = 0; ni < 3; ni++) {
+                    vertices[tr_ + 8 * ni + 5 + 0] = nx;
+                    vertices[tr_ + 8 * ni + 5 + 1] = ny;
+                    vertices[tr_ + 8 * ni + 5 + 2] = nz;
+                }
+            }
+            unsigned b = (xx + yy * subx) * size(qi);
+            for(unsigned i = 0; i < size(qi); i++) {
+                indices.push_back(b + qi[i]);
+            }
+        }
+    }
+
+    create(vertices.data(), indices.data(), vertices.size(), indices.size());
 }
 
 void Mesh::createSphere() {

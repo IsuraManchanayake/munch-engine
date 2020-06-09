@@ -16,6 +16,7 @@ struct Mesh : Resource {
     void create(const std::string& path);
     void createCube();
     void createPlane();
+    void createTerrain();
     void createSphere();
 
     void render() const;
