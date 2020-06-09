@@ -11,7 +11,7 @@ MainWindow::~MainWindow() {
 
 void MainWindow::setup() {
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-    // glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
+    // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
     addLayer<Layer>("Base", bufWidth, bufHeight);
     addLayer<GraphicLayer>("Graphics", bufWidth, bufHeight);

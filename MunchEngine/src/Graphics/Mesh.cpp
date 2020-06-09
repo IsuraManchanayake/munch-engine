@@ -158,6 +158,8 @@ void Mesh::createPlane() {
 void Mesh::createTerrain() {
     static const unsigned subx = 100;
     static const unsigned suby = 100;
+    static const float perlinFreq = 6.f;
+    static const float height = 3.f;
 
     static const GLfloat qv[] = {
     //    x    y    z     u    v    nx   ny   nz
@@ -184,7 +186,7 @@ void Mesh::createTerrain() {
                 // coords
                 float sx = x + qv[s + 0] / subx;
                 float sy = y + qv[s + 1] / suby;
-                float sz = qv[s + 2] + perlin2D(sx * 10, sy * 10);
+                float sz = qv[s + 2] + height * perlin2D(sx * perlinFreq + 1, sy * perlinFreq + 1);
                 vertices.insert(vertices.end(), { sx, sy, sz });
                 // uv
                 float su = sx;

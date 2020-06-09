@@ -34,6 +34,8 @@
     <ClCompile Include="src\UI\UIMesh.cpp" />
     <ClCompile Include="src\UI\UIRoot.cpp" />
     <ClCompile Include="src\UI\Types\PaneUI.cpp" />
+    <ClCompile Include="src\Graphics\HDRI.cpp" />
+    <ClCompile Include="src\Graphics\Guide.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\App\App.h" />
@@ -76,5 +78,7 @@
     <ClInclude Include="src\UI\UIMesh.h" />
     <ClInclude Include="src\UI\UIRoot.h" />
     <ClInclude Include="src\UI\Types\PaneUI.h" />
+    <ClInclude Include="src\Graphics\HDRI.h" />
+    <ClInclude Include="src\Graphics\Guide.h" />
   </ItemGroup>
 </Project>

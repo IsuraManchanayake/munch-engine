@@ -3,9 +3,9 @@
 
 Scene::Scene() 
     : models(), camera({1.f, 1.f, 1.f}, {0.f, 1.f, 0.f}, -90.f, 0.f, 2.f, 1.f), 
-      skyBox(), mainShader(), projection(1.0f), 
+      skyBox(), hdri(), mainShader(), projection(1.0f), 
       directionalLight(), pointLights(), spotLights(), reservedTextureUnits(),
-      mainShaderInited(false), dirShadowShader(), omniShadowShader(),
+      mainShaderInited(false), dirShadowShader(), omniShadowShader(), guide(),
       // uniforms
       directionalLightLocation(), pointLightLocations(), spotLightLocations(),
       materialLocation(), modelLocation(), projectionLocation(), viewLocation(),
@@ -30,6 +30,14 @@ void Scene::setCamera(const Camera& camera) {
 
 void Scene::setSkyBox(const SkyBox& skyBox) {
     this->skyBox = skyBox;
+}
+
+void Scene::setHDRI(const HDRI& hdri) {
+    this->hdri = hdri;
+}
+
+void Scene::setGuide(const Guide& guide) {
+    this->guide = guide;
 }
 
 void Scene::setMainShader(const Shader& shader) {
@@ -144,7 +152,8 @@ void Scene::render(Shader& shader) {
 
 void Scene::render() {
     glm::mat4 view = camera.viewMat();
-    skyBox.render(view, projection);
+    // skyBox.render(view, projection);
+    hdri.render(view, projection);
 
     mainShader.use();
     Shader::setm4(projectionLocation, projection);
@@ -172,13 +181,6 @@ void Scene::render() {
     }
 
     skyBox.read(GL_TEXTURE2 + maxPointLights + maxSpotLights);
-    // for(auto& model : models) {
-    //     mainShader.setm4("model", model.transform);
-    //     model.texture.use(GL_TEXTURE0);
-    //     model.material.use(materialLocation.specularColor, materialLocation.specularShininess, materialLocation.specularIntensity,
-    //                        materialLocation.reflectivity, materialLocation.translucency);
-    //     model.mesh.render();
-    // }
     for(auto& model : models) {
         auto& material = model.material;
         auto& transform = model.transform;
@@ -194,4 +196,6 @@ void Scene::render() {
             mesh.render();
         }
     }
+
+    // guide.render(view, projection);
 }

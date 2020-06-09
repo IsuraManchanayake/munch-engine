@@ -2,6 +2,7 @@
 
 #include "Layer/Layer.h"
 #include "Graphics/Scene.h"
+#include "Graphics/Guide.h"
 
 struct GraphicLayer : Layer {
     GraphicLayer(std::string name, int width, int height);

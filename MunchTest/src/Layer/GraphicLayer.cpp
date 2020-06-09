@@ -19,7 +19,7 @@ void GraphicLayer::setup() {
 
 
         Material plasticMaterial;
-        plasticMaterial.set({1.0f, 1.0f, 1.0f,}, 16.0f, 1.0f, 0.f, 0.f);
+        plasticMaterial.set({1.0f, 1.0f, 1.0f,}, 16.0f, 0.2f, 0.f, 0.f);
         // Material glassMaterial;
         // glassMaterial.set({1.0f, 1.0f, 1.0f,}, 16.0f, 1.0f, 0.f, 0.f);
 
@@ -33,13 +33,9 @@ void GraphicLayer::setup() {
         // }
 
         // Single sphere
-        for (int i = 0; i <= 0; i++) {
-            for (int j = 0; j <= 0; j++) {
-                glm::mat4 transform(1.f);
-                transform = glm::translate(transform, { 3.f * i, 0.f, 3.f * j });
-                scene.addModel(Model::sphere(transform, plasticMaterial));
-            }
-        }
+        Material material1;
+        material1.set({1.0f, 1.0f, 1.0f}, 50.0f, 1.0f, 0.0f, 0.f);
+        scene.addModel(Model::sphere(glm::mat4{1.f}, material1));
         
         // External Model
         // for (int i = 0; i <= 0; i++) {
@@ -54,10 +50,13 @@ void GraphicLayer::setup() {
         // }
 
         glm::mat4 transform(1.f);
+        transform = glm::translate(transform, {0.f, 2.f, 0.f});
         transform = glm::scale(transform, {100.f, 1.f, 100.f });
         transform = glm::rotate(transform, glm::radians(-90.0f), {1.0f, 0.0f, 0.0f});
         transform = glm::translate(transform, {-0.5f, -0.5f, 0.0f});
-        scene.addModel(Model::terrain(transform, plasticMaterial));
+        Material material2;
+        material2.set({ 1.0f, 1.0f, 1.0f }, 16.0f, 0.1f, 0.0f, 0.f);
+        scene.addModel(Model::terrain(transform, material2));
 
         Camera camera(glm::vec3(1.f, 1.f, 1.f), glm::vec3(0.f, 1.f, 0.f), -90.f, 0.f, 2.f, 1.f);
         scene.setCamera(camera);
@@ -66,8 +65,8 @@ void GraphicLayer::setup() {
         const GLfloat dirShadowMapNear = 0.1f, dirShadowMapFar = 40.0f;
 
         DirectionalLight directionalLight;
-        directionalLight.setAmbient(Color::white, 0.2f);
-        directionalLight.setDiffuse(Color::white, {-1.0f, -1.0f, -1.0f}, 0.4f);
+        directionalLight.setAmbient(Color::white, 0.4f);
+        directionalLight.setDiffuse(Color::white, { 1.0f, -1.0f, 1.0f }, 0.6f);
         directionalLight.setShadowMap(dirShadowMapWidth, dirShadowMapHeight, dirShadowMapNear, dirShadowMapFar);
         scene.setDirectionalLight(directionalLight);
 
@@ -96,26 +95,9 @@ void GraphicLayer::setup() {
             scene.addSpotLight(spotLight);
         }
 
-        SkyBox skyBox;
-        // std::array<std::string, 6> images = {
-        //     "SkyBoxes/cupertin-lake_rt.tga",
-        //     "SkyBoxes/cupertin-lake_lf.tga",
-        //     "SkyBoxes/cupertin-lake_up.tga",
-        //     "SkyBoxes/cupertin-lake_dn.tga",
-        //     "SkyBoxes/cupertin-lake_bk.tga",
-        //     "SkyBoxes/cupertin-lake_ft.tga"
-        // };
-        std::array<std::string, 6> images = {
-            "SkyBoxes/cupertin-lake_rt.tga",
-            "SkyBoxes/cupertin-lake_lf.tga",
-            "SkyBoxes/cupertin-lake_up.tga",
-            "SkyBoxes/cupertin-lake_dn.tga",
-            "SkyBoxes/cupertin-lake_bk.tga",
-            "SkyBoxes/cupertin-lake_ft.tga"
-        };
-        skyBox.create(images);
-        // scene.directionalLight.ambientColor = skyBox.averageColor;
-        scene.setSkyBox(skyBox);
+        HDRI hdri;
+        hdri.create("Textures/lostcity.4K.jpg");
+        scene.setHDRI(hdri);
 
         glm::mat4 projection = glm::perspective(glm::radians(60.f), static_cast<float>(width) / height, 0.1f, 100.f);
         scene.setProjection(projection);
@@ -139,12 +121,9 @@ void GraphicLayer::setup() {
     // dirDebugShader.use();
     // dirDebugShader.seti1("depthMap", 31);
 
-    // Guide guide;
-    // Guide guidePointLight;
-    // Guide guideSpotLight;
-    // guide.create({ 0.f, 0.f, 0.f });
-    // guidePointLight.create();
-    // guideSpotLight.create();
+    Guide guide;
+    guide.create();
+    scene.setGuide(guide);
 }
 
 void GraphicLayer::update() {
@@ -212,7 +191,7 @@ void GraphicLayer::update() {
     // guide.setPosition(pointLights[0].position);
     // guidePointLight.setPosition(pointLights[0].position);
     //guideSpotLight.setPosition(spotLights[0].position);
-    //guide.render(viewM, projectionM);
+    // guide.render(scene.view, projectionM);
     // guidePointLight.render(viewM, projectionM);
     //guideSpotLight.render(viewM, projectionM);
 

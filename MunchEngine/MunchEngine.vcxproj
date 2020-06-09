@@ -32,6 +32,8 @@
     <ClCompile Include="src\Event\Types\WindowResizeEvent.cpp" />
     <ClCompile Include="src\Graphics\Camera.cpp" />
     <ClCompile Include="src\Graphics\Entity.cpp" />
+    <ClCompile Include="src\Graphics\Guide.cpp" />
+    <ClCompile Include="src\Graphics\HDRI.cpp" />
     <ClCompile Include="src\Graphics\Lights\DirectionalLight.cpp" />
     <ClCompile Include="src\Graphics\Lights\PointLight.cpp" />
     <ClCompile Include="src\Graphics\Lights\SpotLight.cpp" />
@@ -69,6 +71,8 @@
     <ClInclude Include="src\Graphics\Camera.h" />
     <ClInclude Include="src\Graphics\Drawable.h" />
     <ClInclude Include="src\Graphics\Entity.h" />
+    <ClInclude Include="src\Graphics\Guide.h" />
+    <ClInclude Include="src\Graphics\HDRI.h" />
     <ClInclude Include="src\Graphics\Lights\DirectionalLight.h" />
     <ClInclude Include="src\Graphics\Lights\PointLight.h" />
     <ClInclude Include="src\Graphics\Lights\SpotLight.h" />

@@ -12,6 +12,8 @@
 #include "Graphics/Camera.h"
 #include "Graphics/Model.h"
 #include "Graphics/SkyBox.h"
+#include "Graphics/HDRI.h"
+#include "Guide.h"
 
 struct Scene {
     // Should match main shader's constant
@@ -27,6 +29,8 @@ struct Scene {
     void addModel(const Model& model);
     void setCamera(const Camera& camera);
     void setSkyBox(const SkyBox& skyBox);
+    void setHDRI(const HDRI& hdri);
+    void setGuide(const Guide& guide);
     void setMainShader(const Shader& shader);
     void setProjection(const glm::mat4& projection);
     void setDirectionalLight(const DirectionalLight& directionalLight);
@@ -42,6 +46,7 @@ struct Scene {
     std::vector<Model> models;
     Camera camera;
     SkyBox skyBox;
+    HDRI hdri;
     Shader mainShader;
     glm::mat4 projection;
     DirectionalLight directionalLight;
@@ -51,6 +56,7 @@ struct Scene {
     bool mainShaderInited;
     Shader dirShadowShader;
     Shader omniShadowShader;
+    Guide guide;
 
     // Uniform locations
     struct DirectionalLightLocation {
