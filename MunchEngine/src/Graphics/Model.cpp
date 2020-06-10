@@ -3,7 +3,7 @@
 #include "Core/Logger.h"
 
 Object::Object() 
-    : meshes(), textures(), meshToTex() {
+    : meshes(), albedos(), normals(), meshToTex() {
 }
 
 Object::~Object() {
@@ -77,7 +77,7 @@ void Object::loadMesh(aiMesh* mesh, const aiScene* scene) {
 }
 
 void Object::loadMaterials(const aiScene* scene) {
-    textures.resize(scene->mNumMaterials);
+    albedos.resize(scene->mNumMaterials);
     for(size_t i = 0; i < scene->mNumMaterials; i++) {
         aiMaterial* material = scene->mMaterials[i];
         
@@ -85,11 +85,11 @@ void Object::loadMaterials(const aiScene* scene) {
             aiString path;
             if(material->GetTexture(aiTextureType_DIFFUSE, 0, &path) == AI_SUCCESS) {
                 std::string realPath = cat("Textures/", path.C_Str());
-                textures[i].create(realPath.c_str());
+                albedos[i].create(realPath.c_str());
             }
         }
-        if(textures[i].id == 0) {
-            textures[i].create("Textures/white.tga");
+        if(albedos[i].id == 0) {
+            albedos[i].create("Textures/white.tga");
         }
     }
 }
@@ -112,18 +112,48 @@ Model::Model(const std::string& path, glm::mat4 transform, Material material)
     object = pos->second;
 }
 
+
 Model Model::cube(glm::mat4 transform, Material material) {
+    return Model::cube(transform, material, 
+                            Texture::createColorTexture(4, 4, 1.f, 1.f, 1.f), 
+                            Texture::createColorTexture(4, 4, 0.5f, 0.5f, 1.0f), 
+                            Texture::createColorTexture(4, 4, 0.5f, 0.5f, 0.5f));
+}
+
+Model Model::sphere(glm::mat4 transform, Material material) {
+    return Model::sphere(transform, material, 
+                            Texture::createColorTexture(4, 4, 1.f, 1.f, 1.f), 
+                            Texture::createColorTexture(4, 4, 0.5f, 0.5f, 1.0f), 
+                            Texture::createColorTexture(4, 4, 0.5f, 0.5f, 0.5f));
+}
+
+Model Model::plane(glm::mat4 transform, Material material) {
+    return Model::plane(transform, material, 
+                            Texture::createColorTexture(4, 4, 1.f, 1.f, 1.f), 
+                            Texture::createColorTexture(4, 4, 0.5f, 0.5f, 1.0f), 
+                            Texture::createColorTexture(4, 4, 0.5f, 0.5f, 0.5f));
+}
+
+Model Model::terrain(glm::mat4 transform, Material material) {
+    return Model::terrain(transform, material, 
+                            Texture::createColorTexture(4, 4, 1.f, 1.f, 1.f), 
+                            Texture::createColorTexture(4, 4, 0.5f, 0.5f, 1.0f), 
+                            Texture::createColorTexture(4, 4, 0.5f, 0.5f, 0.5f));
+}
+
+
+Model Model::cube(glm::mat4 transform, Material material, Texture albedo, Texture normal, Texture displacement) {
     auto pos = loadedObjects.find("cube");
     if(pos == loadedObjects.end()) {
         Mesh mesh;
         mesh.createCube();
-        Texture texture;
-        texture.create("Textures/white.tga");
         Object* newObject = new Object;
         newObject->meshes.push_back(mesh);
-        newObject->textures.push_back(texture);
+        newObject->albedos.push_back(albedo);
+        newObject->normals.push_back(normal);
+        newObject->displacements.push_back(displacement);
         newObject->meshToTex.push_back(0);
-        pos = loadedObjects.insert({"cube", newObject}).first;
+        pos = loadedObjects.insert({cat("cube", albedo.id, ":", normal.id, ":", displacement.id), newObject}).first;
     }
     Model model;
     model.object = pos->second;
@@ -132,18 +162,18 @@ Model Model::cube(glm::mat4 transform, Material material) {
     return model;
 }
 
-Model Model::sphere(glm::mat4 transform, Material material) {
+Model Model::sphere(glm::mat4 transform, Material material, Texture albedo, Texture normal, Texture displacement) {
     auto pos = loadedObjects.find("sphere");
     if(pos == loadedObjects.end()) {
         Mesh mesh;
         mesh.createSphere();
-        Texture texture;
-        texture.create("Textures/white.tga");
         Object* newObject = new Object;
         newObject->meshes.push_back(mesh);
-        newObject->textures.push_back(texture);
+        newObject->albedos.push_back(albedo);
+        newObject->normals.push_back(normal);
+        newObject->displacements.push_back(displacement);
         newObject->meshToTex.push_back(0);
-        pos = loadedObjects.insert({"sphere", newObject}).first;
+        pos = loadedObjects.insert({cat("sphere", albedo.id, ":", normal.id, ":", displacement.id), newObject}).first;
     }
     Model model;
     model.object = pos->second;
@@ -152,18 +182,18 @@ Model Model::sphere(glm::mat4 transform, Material material) {
     return model;
 }
 
-Model Model::plane(glm::mat4 transform, Material material) {
+Model Model::plane(glm::mat4 transform, Material material, Texture albedo, Texture normal, Texture displacement) {
     auto pos = loadedObjects.find("plane");
     if(pos == loadedObjects.end()) {
         Mesh mesh;
         mesh.createPlane();
-        Texture texture;
-        texture.create("Textures/white.tga");
         Object* newObject = new Object;
         newObject->meshes.push_back(mesh);
-        newObject->textures.push_back(texture);
+        newObject->albedos.push_back(albedo);
+        newObject->normals.push_back(normal);
+        newObject->displacements.push_back(displacement);
         newObject->meshToTex.push_back(0);
-        pos = loadedObjects.insert({"plane", newObject}).first;
+        pos = loadedObjects.insert({cat("plane", albedo.id, ":", normal.id, ":", displacement.id), newObject}).first;
     }
     Model model;
     model.object = pos->second;
@@ -172,18 +202,18 @@ Model Model::plane(glm::mat4 transform, Material material) {
     return model;
 }
 
-Model Model::terrain(glm::mat4 transform, Material material) {
+Model Model::terrain(glm::mat4 transform, Material material, Texture albedo, Texture normal, Texture displacement) {
     auto pos = loadedObjects.find("terrain");
     if(pos == loadedObjects.end()) {
         Mesh mesh;
         mesh.createTerrain();
-        Texture texture;
-        texture.create("Textures/white.tga");
         Object* newObject = new Object;
         newObject->meshes.push_back(mesh);
-        newObject->textures.push_back(texture);
+        newObject->albedos.push_back(albedo);
+        newObject->normals.push_back(normal);
+        newObject->displacements.push_back(displacement);
         newObject->meshToTex.push_back(0);
-        pos = loadedObjects.insert({"terrain", newObject}).first;
+        pos = loadedObjects.insert({cat("terrain", albedo.id, ":", normal.id, ":", displacement.id), newObject}).first;
     }
     Model model;
     model.object = pos->second;

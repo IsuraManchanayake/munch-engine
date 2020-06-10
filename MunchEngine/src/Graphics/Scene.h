@@ -108,6 +108,10 @@ struct Scene {
     GLint viewLocation;
     GLint directionalLightTransformLocation;
     GLint textureLocation;
+    GLint useNormalMapLocation;
+    GLint normalMapLocation;
+    GLint useDisplaceMapLocation;
+    GLint displaceMapLocation;
     GLint pointLightCountLocation;
     GLint spotLightCountLocation;
     GLint eyeLocation;

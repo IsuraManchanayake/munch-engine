@@ -1,5 +1,6 @@
 #include "Graphics/Scene.h"
 #include "Core/Common.h"
+#include "Core/Logger.h"
 
 Scene::Scene() 
     : models(), camera({1.f, 1.f, 1.f}, {0.f, 1.f, 0.f}, -90.f, 0.f, 2.f, 1.f), 
@@ -9,8 +10,9 @@ Scene::Scene()
       // uniforms
       directionalLightLocation(), pointLightLocations(), spotLightLocations(),
       materialLocation(), modelLocation(), projectionLocation(), viewLocation(),
-      directionalLightTransformLocation(), textureLocation(), pointLightCountLocation(),
-      spotLightCountLocation(), eyeLocation() {
+      directionalLightTransformLocation(), textureLocation(), useNormalMapLocation(),
+      normalMapLocation(), useDisplaceMapLocation(), displaceMapLocation(),
+      pointLightCountLocation(), spotLightCountLocation(), eyeLocation() {
 }
 
 Scene::~Scene() {
@@ -90,6 +92,10 @@ void Scene::setCommonUniforms() {
     
     // Texture locations
     textureLocation = mainShader.getUniformLocation("theTexture");
+    useNormalMapLocation = mainShader.getUniformLocation("useNormalMap");
+    normalMapLocation = mainShader.getUniformLocation("normalMap");
+    useDisplaceMapLocation = mainShader.getUniformLocation("useDisplaceMap");
+    displaceMapLocation = mainShader.getUniformLocation("displaceMap");
 
     // lightcount locations
     pointLightCountLocation = mainShader.getUniformLocation("pointLightCount");
@@ -128,8 +134,8 @@ void Scene::setPointSpotLightUniforms() {
 
 void Scene::setTextureUnits() {
     mainShader.use();
-    Shader::seti1(textureLocation, 0);
-    Shader::seti1(directionalLightLocation.shadowMap, 1);
+    mainShader.seti1(textureLocation, 0);
+    mainShader.seti1(directionalLightLocation.shadowMap, 1);
     for(size_t i = 0; i < maxPointLights; i++) {
         mainShader.seti1(cat("pointLights[", i, "].shadowMap"), i + 2);
     }
@@ -137,7 +143,9 @@ void Scene::setTextureUnits() {
         mainShader.seti1(cat("spotLights[", i, "].shadowMap"), i + maxPointLights + 2);
     }
     mainShader.seti1("skyBox", maxPointLights + maxSpotLights + 2);
-    reservedTextureUnits = maxPointLights + maxSpotLights + 3;
+    mainShader.seti1(normalMapLocation, maxPointLights + maxSpotLights + 3);
+    mainShader.seti1(displaceMapLocation, maxPointLights + maxSpotLights + 4);
+    reservedTextureUnits = maxPointLights + maxSpotLights + 5;
 }
 
 void Scene::render(Shader& shader) {
@@ -190,9 +198,23 @@ void Scene::render() {
                      materialLocation.reflectivity, materialLocation.translucency);
         
         for(size_t i = 0; i < object->meshes.size(); i++) {
-            auto& texture = object->textures[object->meshToTex[i]];
-            auto& mesh = object->meshes[i];
+            auto& texture = object->albedos[object->meshToTex[i]];
+            if(object->normals.size() > 0) {
+                Shader::seti1(useNormalMapLocation, 1);
+                auto& normalMap = object->normals[object->meshToTex[i]];
+                normalMap.use(GL_TEXTURE3 + maxPointLights + maxSpotLights);    
+            } else {
+                Shader::seti1(useNormalMapLocation, 0);
+            }
+            if(object->displacements.size() > 0) {
+                Shader::seti1(useDisplaceMapLocation, 1);
+                auto& displaceMap = object->displacements[object->meshToTex[i]];
+                displaceMap.use(GL_TEXTURE4 + maxPointLights + maxSpotLights);  
+            } else {
+                Shader::seti1(useDisplaceMapLocation, 0);
+            }
             texture.use(GL_TEXTURE0);
+            auto& mesh = object->meshes[i];
             mesh.render();
         }
     }

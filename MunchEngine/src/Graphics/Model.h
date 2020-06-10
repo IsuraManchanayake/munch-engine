@@ -23,7 +23,9 @@ struct Object {
     void loadMaterials(const aiScene* scene);
 
     std::vector<Mesh> meshes;
-    std::vector<Texture> textures;
+    std::vector<Texture> albedos;
+    std::vector<Texture> normals;
+    std::vector<Texture> displacements;
     std::vector<unsigned> meshToTex;
 };
 
@@ -40,4 +42,8 @@ struct Model {
     static Model sphere(glm::mat4 transform, Material material);
     static Model plane(glm::mat4 transform, Material material);
     static Model terrain(glm::mat4 transform, Material material);
+    static Model cube(glm::mat4 transform, Material material, Texture albedo, Texture normal, Texture displacement);
+    static Model sphere(glm::mat4 transform, Material material, Texture albedo, Texture normal, Texture displacement);
+    static Model plane(glm::mat4 transform, Material material, Texture albedo, Texture normal, Texture displacement);
+    static Model terrain(glm::mat4 transform, Material material, Texture albedo, Texture normal, Texture displacement);
 };

@@ -13,6 +13,7 @@ struct Mesh : Resource {
     ADD_SPECIAL_CLASS_FUNCTIONS(Mesh);
 
     void create(const GLfloat* vertices, const unsigned* indices, size_t numvertices, size_t numindices);
+    void create(const GLfloat* vertices, const GLfloat* tangents, const unsigned* indices, size_t numvertices, size_t numindices);
     void create(const std::string& path);
     void createCube();
     void createPlane();
@@ -22,6 +23,6 @@ struct Mesh : Resource {
     void render() const;
     void clear();
 
-    GLuint vao, vbo, ibo;
+    GLuint vao, vbo, vbot, ibo;
     GLsizei indexCount;
 };

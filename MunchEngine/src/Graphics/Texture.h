@@ -15,6 +15,8 @@ struct Texture : Resource {
     void use(GLenum textureUnit);
     void clear();
 
+    static Texture createColorTexture(unsigned width, unsigned height, float r, float g, float b);
+
     GLuint id;
     int width, height, bitDepth;
 };
