@@ -255,4 +255,5 @@ void main() {
 
     // color = vec4(TBN[2], 1.0);
     color = texture(theTexture, vTex) * (ambientColor + directionalColor + pointLightsColor + spotLightsColor + reflectedColor + refractedColor);
+    color.rgb = pow(color.rgb, vec3(1/2.2));
 }

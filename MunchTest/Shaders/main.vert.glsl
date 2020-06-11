@@ -36,10 +36,10 @@ void main() {
     vec3 B = normalize(cross(N, T));
     TBN = mat3(T, B, N);
 
-    if(useDisplaceMap == 1) {
-        vec4 p = 0.2 * vec4(N * (2 * texture(displaceMap, tex).r - 1), 0.f) + model * vec4(pos, 1.0);
-        gl_Position = projection * view * p;
-    } else {
+    // if(useDisplaceMap == 1) {
+    //     vec4 p = 0.6 * vec4(N * (2 * texture(displaceMap, vTex).r - 1), 0.f) + model * vec4(pos, 1.0);
+    //     gl_Position = projection * view * p;
+    // } else {
         gl_Position = projection * view * model * vec4(pos, 1.0);
-    }
+    // }
 }

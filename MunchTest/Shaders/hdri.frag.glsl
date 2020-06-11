@@ -16,4 +16,5 @@ void main() {
     }
     float x = angle / (2 * PI);
     color = texture(hdri, vec2(x, y));
+    // color.rgb = pow(color.rgb, vec3(1/2.2));
 }

@@ -66,7 +66,7 @@ Texture Texture::createColorTexture(unsigned width, unsigned height, float r, fl
 
     delete[] data;
 
-    return Texture(texture);
+    return Texture {texture};
 }
 
 void Texture::use(GLenum textureUnit) {

@@ -32,17 +32,20 @@ void NormalMapTest::setup() {
 
         // Single sphere
         Material material1;
-        material1.set({1.0f, 1.0f, 1.0f}, 10.0f, 1.0f, 0.0f, 0.f);
+        material1.set({1.0f, 1.0f, 1.0f}, 50.0f, 1.0f, 0.0f, 0.f);
         glm::mat4 stransform{1.f};
         stransform = glm::translate(stransform, {0.f, 1.f, 0.f});
         stransform = glm::scale(stransform, 2.f * glm::vec3{1.0f, 1.0f, 1.0f});
         stransform = glm::rotate(stransform, glm::radians(-90.f), {1.0f, 0.0f, 0.0f});
         Texture albedo;
-        albedo.create("Textures/rough_block_wall_diff_2k.jpg");
+        // albedo.create("Textures/rough_block_wall_diff_2k.jpg");
+        albedo.create("Textures/metal_plate_diff_2k.jpg");
         Texture normalmap;
-        normalmap.create("Textures/rough_block_wall_nor_2k.jpg");
-        Texture displacementMap;
-        displacementMap.create("Textures/rough_block_wall_disp_2k.jpg");
+        // normalmap.create("Textures/rough_block_wall_nor_2k.jpg");
+        normalmap.create("Textures/metal_plate_Nor_2k.jpg");
+        Texture displacementMap;// = Texture::createColorTexture(4, 4, 0.5f, 0.5f, 0.5f);
+        // displacementMap.create("Textures/rough_block_wall_disp_2k.jpg");
+        displacementMap.create("Textures/metal_plate_disp_2k.jpg");
         scene.addModel(Model::sphere(stransform, material1, albedo, normalmap, displacementMap));
         
         // External Model
@@ -66,7 +69,7 @@ void NormalMapTest::setup() {
         material2.set({ 1.0f, 1.0f, 1.0f }, 16.0f, 0.1f, 0.0f, 0.f);
         scene.addModel(Model::terrain(transform, material2));
 
-        Camera camera(glm::vec3(8.2f, 3.3f, 2.2f), glm::vec3(0.f, 1.f, 0.f), -90.f, 0.f, 2.f, 1.f);
+        Camera camera(glm::vec3(8.2f, 3.3f, 2.2f), glm::vec3(0.f, 1.f, 0.f), -145.f, 0.f, 2.f, 1.f);
         scene.setCamera(camera);
 
         const GLuint dirShadowMapWidth = 512, dirShadowMapHeight = 512;
@@ -142,9 +145,9 @@ void NormalMapTest::update() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     // -------- Animations
-    scene.spotLights[0].position = glm::vec3(2 * cos(timef / 3), 3.0f, 2 * sin(timef / 3));
+    scene.spotLights[0].position = glm::vec3(4 * cos(timef / 3), 3.0f, 4 * sin(timef / 3));
     scene.spotLights[0].updateLightProjectionView();
-    scene.spotLights[1].position = glm::vec3(-2 * cos(timef / 3), 3.0f, -2 * sin(timef / 3));
+    scene.spotLights[1].position = glm::vec3(-4 * cos(timef / 3), 3.0f, -4 * sin(timef / 3));
     scene.spotLights[1].updateLightProjectionView();
 
     // -------- Directional shadow map pass
