@@ -1,14 +1,18 @@
 #pragma once
 
-#include "Graphics/Mesh.h"
+#include "Graphics/Model.h"
+#include "Graphics/Material.h"
 #include "Graphics/Shader.h"
+// #include "Graphics/Material.h"
 
 struct Entity {
-    Entity();
+    Model* model;
+    glm::mat4 transform;
+    bool loadedFromDisk;
 
-    void setup();
-    void update();
+    Entity();
+    virtual ~Entity();
     
-    std::vector<Mesh> meshes;
-    Shader* shader;
+    void render(Shader* shader);
+    virtual void render() = 0;
 };

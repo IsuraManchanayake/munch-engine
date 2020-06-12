@@ -5,6 +5,8 @@
 #include <vector>
 #include <Windows.h>
 
+#undef min
+#undef max
 #undef near
 #undef far
 

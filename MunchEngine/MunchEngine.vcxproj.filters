@@ -23,10 +23,6 @@
     <ClCompile Include="src\Graphics\ShadowMaps\DirectionalShadowMap.cpp" />
     <ClCompile Include="src\Graphics\ShadowMaps\OmniDirectionalShadowMap.cpp" />
     <ClCompile Include="src\Graphics\Camera.cpp" />
-    <ClCompile Include="src\Graphics\Entity.cpp" />
-    <ClCompile Include="src\Graphics\Material.cpp" />
-    <ClCompile Include="src\Graphics\Model.cpp" />
-    <ClCompile Include="src\Graphics\Scene.cpp" />
     <ClCompile Include="src\Graphics\SkyBox.cpp" />
     <ClCompile Include="src\Event\Types\WindowResizeEvent.cpp" />
     <ClCompile Include="src\UI\UIElement.cpp" />
@@ -36,6 +32,13 @@
     <ClCompile Include="src\UI\Types\PaneUI.cpp" />
     <ClCompile Include="src\Graphics\HDRI.cpp" />
     <ClCompile Include="src\Graphics\Guide.cpp" />
+    <ClCompile Include="src\Graphics\Material.cpp" />
+    <ClCompile Include="src\Graphics\Entity.cpp" />
+    <ClCompile Include="src\Graphics\Model.cpp" />
+    <ClCompile Include="src\Graphics\Entities\EntityFactory.cpp" />
+    <ClCompile Include="src\Graphics\Entities\Default\DefaultEntity.cpp" />
+    <ClCompile Include="src\Graphics\ShaderFactory.cpp" />
+    <ClCompile Include="src\Core\V3.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\App\App.h" />
@@ -53,8 +56,6 @@
     <ClInclude Include="src\Event\Types\MouseMoveEvent.h" />
     <ClInclude Include="src\Event\Types\MousePressEvent.h" />
     <ClInclude Include="src\Config\Config.h" />
-    <ClInclude Include="src\Graphics\Drawable.h" />
-    <ClInclude Include="src\Graphics\Entity.h" />
     <ClInclude Include="src\Graphics\Mesh.h" />
     <ClInclude Include="src\Graphics\Resource.h" />
     <ClInclude Include="src\Graphics\Shader.h" />
@@ -66,9 +67,6 @@
     <ClInclude Include="src\Graphics\ShadowMaps\DirectionalShadowMap.h" />
     <ClInclude Include="src\Graphics\ShadowMaps\OmniDirectionalShadowMap.h" />
     <ClInclude Include="src\Graphics\Camera.h" />
-    <ClInclude Include="src\Graphics\Material.h" />
-    <ClInclude Include="src\Graphics\Model.h" />
-    <ClInclude Include="src\Graphics\Scene.h" />
     <ClInclude Include="src\Graphics\SkyBox.h" />
     <ClInclude Include="src\Event\Types\WindowResizeEvent.h" />
     <ClInclude Include="src\Window\EditorWindow.h" />
@@ -80,5 +78,12 @@
     <ClInclude Include="src\UI\Types\PaneUI.h" />
     <ClInclude Include="src\Graphics\HDRI.h" />
     <ClInclude Include="src\Graphics\Guide.h" />
+    <ClInclude Include="src\Graphics\Material.h" />
+    <ClInclude Include="src\Graphics\Entity.h" />
+    <ClInclude Include="src\Graphics\Model.h" />
+    <ClInclude Include="src\Graphics\Entities\EntityFactory.h" />
+    <ClInclude Include="src\Graphics\Entities\Default\DefaultEntity.h" />
+    <ClInclude Include="src\Graphics\ShaderFactory.h" />
+    <ClInclude Include="src\Core\V3.h" />
   </ItemGroup>
 </Project>

@@ -1,11 +1,15 @@
 #pragma once
 
 #include "Layer/Layer.h"
-#include "Graphics/Scene.h"
-#include "Graphics/Guide.h"
+#include "Graphics/Entity.h"
+#include "Graphics/Lights/DirectionalLight.h"
+#include "Graphics/Camera.h"
+
+#include <vector>
 
 struct GraphicLayer : Layer {
     GraphicLayer(std::string name, int width, int height);
+    ~GraphicLayer();
 
     void setup() override;
     void update() override;
@@ -15,6 +19,12 @@ struct GraphicLayer : Layer {
     bool onMouseMove(MouseMoveEvent& event) override;
     bool onWindowResize(WindowResizeEvent& event) override;
 
-    Scene scene;
     KeyContainer keys;
+    std::vector<Entity*> entities;
+    std::vector<Shader*> shaders;
+    Shader* defaultShader;
+    DirectionalLight directionalLight;
+    Camera camera;
+    Shader dirDebugShader;
+    glm::mat4 projection;
 };

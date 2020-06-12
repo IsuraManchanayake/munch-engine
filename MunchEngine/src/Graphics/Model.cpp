@@ -1,16 +1,18 @@
 #include "Graphics/Model.h"
-#include "Core/Common.h"
 #include "Core/Logger.h"
 
-Object::Object() 
-    : meshes(), albedos(), normals(), meshToTex() {
+std::unordered_map<std::string, Model*> Model::loadedModels;
+
+Model::Model() 
+    : meshes(), materials(), meshToMaterial() {
 }
 
-Object::~Object() {
-}
-
-void Object::load(const std::string& path) {
-#if 1
+Model* Model::load(const std::string& path) {
+    auto pos = loadedModels.find(path);
+    if(pos != loadedModels.end()) {
+        return pos->second;
+    }
+    Model* model = new Model;
     Assimp::Importer importer;
     const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate
                                                     | aiProcess_FlipUVs
@@ -21,20 +23,13 @@ void Object::load(const std::string& path) {
         Logger::error("Error loading ", path);
         error_exit(1);
     }
-    loadNode(scene->mRootNode, scene);
-    loadMaterials(scene);
-#else
-    Mesh mesh;
-    mesh.create(path);
-    meshes.push_back(mesh);
-    meshToTex.push_back(0);
-    Texture texture;
-    texture.create("Textures/african_head_diffuse.tga");
-    textures.push_back(texture);
-#endif
+    model->loadNode(scene->mRootNode, scene);
+    model->loadMaterials(scene);
+    loadedModels.emplace(path, model);
+    return model;
 }
 
-void Object::loadNode(aiNode* node, const aiScene* scene) {
+void Model::loadNode(aiNode* node, const aiScene* scene) {
     for(size_t i = 0; i < node->mNumMeshes; i++) {
         loadMesh(scene->mMeshes[node->mMeshes[i]], scene);
     }
@@ -43,7 +38,7 @@ void Object::loadNode(aiNode* node, const aiScene* scene) {
     }
 }
 
-void Object::loadMesh(aiMesh* mesh, const aiScene* scene) {
+void Model::loadMesh(aiMesh* mesh, const aiScene* scene) {
     std::vector<GLfloat> vertices;
     std::vector<unsigned> indices;
     
@@ -73,151 +68,25 @@ void Object::loadMesh(aiMesh* mesh, const aiScene* scene) {
     Mesh newMesh;
     newMesh.create(&vertices[0], &indices[0], vertices.size(), indices.size());
     meshes.push_back(newMesh);
-    meshToTex.push_back(mesh->mMaterialIndex);
+    meshToMaterial.push_back(mesh->mMaterialIndex);
 }
 
-void Object::loadMaterials(const aiScene* scene) {
-    albedos.resize(scene->mNumMaterials);
+void Model::loadMaterials(const aiScene* scene) {
+    materials.resize(scene->mNumMaterials);
     for(size_t i = 0; i < scene->mNumMaterials; i++) {
         aiMaterial* material = scene->mMaterials[i];
         
         if(material->GetTextureCount(aiTextureType_DIFFUSE)) {
             aiString path;
             if(material->GetTexture(aiTextureType_DIFFUSE, 0, &path) == AI_SUCCESS) {
-                std::string realPath = cat("Textures/", path.C_Str());
-                albedos[i].create(realPath.c_str());
+                std::string realPath = cat("materials/", path.C_Str());
+                materials[i].albedo.create(realPath.c_str());
+                materials[i].attachDefault(TextureMapType::normal);
+                materials[i].attachDefault(TextureMapType::displacement);
             }
         }
-        if(albedos[i].id == 0) {
-            albedos[i].create("Textures/white.tga");
+        if(materials[i].albedo.id == 0) {
+            materials[i] = Material::defaultMaterial();
         }
     }
-}
-
-
-std::unordered_map<std::string, Object*> Model::loadedObjects;
-
-Model::Model()
-    : object(nullptr), transform(1.f), material() {
-}
-
-Model::Model(const std::string& path, glm::mat4 transform, Material material) 
-    : object(nullptr), transform(std::move(transform)), material(std::move(material)) {
-    auto pos = loadedObjects.find(path);
-    if(pos == loadedObjects.end()) {
-        Object* newObject = new Object;
-        newObject->load(path);
-        pos = loadedObjects.insert({path, newObject}).first;
-    }
-    object = pos->second;
-}
-
-
-Model Model::cube(glm::mat4 transform, Material material) {
-    return Model::cube(transform, material, 
-                            Texture::createColorTexture(4, 4, 1.f, 1.f, 1.f), 
-                            Texture::createColorTexture(4, 4, 0.5f, 0.5f, 1.0f), 
-                            Texture::createColorTexture(4, 4, 0.5f, 0.5f, 0.5f));
-}
-
-Model Model::sphere(glm::mat4 transform, Material material) {
-    return Model::sphere(transform, material, 
-                            Texture::createColorTexture(4, 4, 1.f, 1.f, 1.f), 
-                            Texture::createColorTexture(4, 4, 0.5f, 0.5f, 1.0f), 
-                            Texture::createColorTexture(4, 4, 0.5f, 0.5f, 0.5f));
-}
-
-Model Model::plane(glm::mat4 transform, Material material) {
-    return Model::plane(transform, material, 
-                            Texture::createColorTexture(4, 4, 1.f, 1.f, 1.f), 
-                            Texture::createColorTexture(4, 4, 0.5f, 0.5f, 1.0f), 
-                            Texture::createColorTexture(4, 4, 0.5f, 0.5f, 0.5f));
-}
-
-Model Model::terrain(glm::mat4 transform, Material material) {
-    return Model::terrain(transform, material, 
-                            Texture::createColorTexture(4, 4, 1.f, 1.f, 1.f), 
-                            Texture::createColorTexture(4, 4, 0.5f, 0.5f, 1.0f), 
-                            Texture::createColorTexture(4, 4, 0.5f, 0.5f, 0.5f));
-}
-
-
-Model Model::cube(glm::mat4 transform, Material material, Texture albedo, Texture normal, Texture displacement) {
-    auto pos = loadedObjects.find("cube");
-    if(pos == loadedObjects.end()) {
-        Mesh mesh;
-        mesh.createCube();
-        Object* newObject = new Object;
-        newObject->meshes.push_back(mesh);
-        newObject->albedos.push_back(albedo);
-        newObject->normals.push_back(normal);
-        newObject->displacements.push_back(displacement);
-        newObject->meshToTex.push_back(0);
-        pos = loadedObjects.insert({cat("cube", albedo.id, ":", normal.id, ":", displacement.id), newObject}).first;
-    }
-    Model model;
-    model.object = pos->second;
-    model.transform = std::move(transform);
-    model.material = std::move(material);
-    return model;
-}
-
-Model Model::sphere(glm::mat4 transform, Material material, Texture albedo, Texture normal, Texture displacement) {
-    auto pos = loadedObjects.find("sphere");
-    if(pos == loadedObjects.end()) {
-        Mesh mesh;
-        mesh.createSphere();
-        Object* newObject = new Object;
-        newObject->meshes.push_back(mesh);
-        newObject->albedos.push_back(albedo);
-        newObject->normals.push_back(normal);
-        newObject->displacements.push_back(displacement);
-        newObject->meshToTex.push_back(0);
-        pos = loadedObjects.insert({cat("sphere", albedo.id, ":", normal.id, ":", displacement.id), newObject}).first;
-    }
-    Model model;
-    model.object = pos->second;
-    model.transform = std::move(transform);
-    model.material = std::move(material);
-    return model;
-}
-
-Model Model::plane(glm::mat4 transform, Material material, Texture albedo, Texture normal, Texture displacement) {
-    auto pos = loadedObjects.find("plane");
-    if(pos == loadedObjects.end()) {
-        Mesh mesh;
-        mesh.createPlane();
-        Object* newObject = new Object;
-        newObject->meshes.push_back(mesh);
-        newObject->albedos.push_back(albedo);
-        newObject->normals.push_back(normal);
-        newObject->displacements.push_back(displacement);
-        newObject->meshToTex.push_back(0);
-        pos = loadedObjects.insert({cat("plane", albedo.id, ":", normal.id, ":", displacement.id), newObject}).first;
-    }
-    Model model;
-    model.object = pos->second;
-    model.transform = std::move(transform);
-    model.material = std::move(material);
-    return model;
-}
-
-Model Model::terrain(glm::mat4 transform, Material material, Texture albedo, Texture normal, Texture displacement) {
-    auto pos = loadedObjects.find("terrain");
-    if(pos == loadedObjects.end()) {
-        Mesh mesh;
-        mesh.createTerrain();
-        Object* newObject = new Object;
-        newObject->meshes.push_back(mesh);
-        newObject->albedos.push_back(albedo);
-        newObject->normals.push_back(normal);
-        newObject->displacements.push_back(displacement);
-        newObject->meshToTex.push_back(0);
-        pos = loadedObjects.insert({cat("terrain", albedo.id, ":", normal.id, ":", displacement.id), newObject}).first;
-    }
-    Model model;
-    model.object = pos->second;
-    model.transform = std::move(transform);
-    model.material = std::move(material);
-    return model;
 }

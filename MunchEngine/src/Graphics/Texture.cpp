@@ -44,6 +44,9 @@ void Texture::create(const std::string& fileLocation) {
 Texture Texture::createColorTexture(unsigned width, unsigned height, float r, float g, float b) {
     Texture texture;
 
+    texture.width = width;
+    texture.height = height;
+    texture.bitDepth = 3;
     unsigned char* data = new unsigned char[width * height * 3];
 
     for(size_t i = 0, s = ((size_t)width) * height; i < s; i++) {

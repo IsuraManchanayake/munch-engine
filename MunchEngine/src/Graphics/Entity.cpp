@@ -1,18 +1,19 @@
 #include "Graphics/Entity.h"
 
 Entity::Entity() 
-    : meshes(), shader(nullptr) {
+    : model(nullptr), transform(1.f), loadedFromDisk(false) {
 }
 
-void Entity::setup() {
-
+Entity::~Entity() {
+    if(!loadedFromDisk) {
+        delete model;
+    }
 }
 
-void Entity::update() {
-    if(!shader) return;
-
+void Entity::render(Shader* shader) {
     shader->use();
-    for(auto& mesh : meshes) {
+    shader->setm4("model", transform);
+    for(auto& mesh : model->meshes) {
         mesh.render();
     }
 }

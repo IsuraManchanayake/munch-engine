@@ -3,22 +3,22 @@
 
 namespace Color {
 
-glm::vec3 white      = glm::vec3{ 100, 100, 100 } / 100.0f;
-glm::vec3 lightgray  = glm::vec3{  75,  75,  75 } / 100.0f;
-glm::vec3 darkgray   = glm::vec3{  50,  50,  50 } / 100.0f;
-glm::vec3 black      = glm::vec3{   0,   0,   0 } / 100.0f;
-glm::vec3 red        = glm::vec3{ 100,   0,   0 } / 100.0f;
-glm::vec3 lowred     = glm::vec3{  50,   0,   0 } / 100.0f;
-glm::vec3 yellow     = glm::vec3{ 100, 100,   0 } / 100.0f;
-glm::vec3 lowyellow  = glm::vec3{  50,  50,   0 } / 100.0f;
-glm::vec3 green      = glm::vec3{   0, 100,   0 } / 100.0f;
-glm::vec3 lowgreen   = glm::vec3{   0,  50,   0 } / 100.0f;
-glm::vec3 cyan       = glm::vec3{   0, 100, 100 } / 100.0f;
-glm::vec3 lowcyan    = glm::vec3{   0,  50,  50 } / 100.0f;
-glm::vec3 blue       = glm::vec3{   0,   0, 100 } / 100.0f;
-glm::vec3 lowblue    = glm::vec3{   0,   0,  50 } / 100.0f;
-glm::vec3 magenta    = glm::vec3{ 100,   0, 100 } / 100.0f;
-glm::vec3 lowmagenta = glm::vec3{  50,   0,  50 } / 100.0f;
+const glm::vec3 white      = glm::vec3{ 100, 100, 100 } / 100.0f;
+const glm::vec3 lightgray  = glm::vec3{  75,  75,  75 } / 100.0f;
+const glm::vec3 darkgray   = glm::vec3{  50,  50,  50 } / 100.0f;
+const glm::vec3 black      = glm::vec3{   0,   0,   0 } / 100.0f;
+const glm::vec3 red        = glm::vec3{ 100,   0,   0 } / 100.0f;
+const glm::vec3 lowred     = glm::vec3{  50,   0,   0 } / 100.0f;
+const glm::vec3 yellow     = glm::vec3{ 100, 100,   0 } / 100.0f;
+const glm::vec3 lowyellow  = glm::vec3{  50,  50,   0 } / 100.0f;
+const glm::vec3 green      = glm::vec3{   0, 100,   0 } / 100.0f;
+const glm::vec3 lowgreen   = glm::vec3{   0,  50,   0 } / 100.0f;
+const glm::vec3 cyan       = glm::vec3{   0, 100, 100 } / 100.0f;
+const glm::vec3 lowcyan    = glm::vec3{   0,  50,  50 } / 100.0f;
+const glm::vec3 blue       = glm::vec3{   0,   0, 100 } / 100.0f;
+const glm::vec3 lowblue    = glm::vec3{   0,   0,  50 } / 100.0f;
+const glm::vec3 magenta    = glm::vec3{ 100,   0, 100 } / 100.0f;
+const glm::vec3 lowmagenta = glm::vec3{  50,   0,  50 } / 100.0f;
 
 glm::vec3 hsv(float h, float s, float v) {
     h = std::fmod(h, 360);

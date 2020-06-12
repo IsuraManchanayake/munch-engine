@@ -12,20 +12,22 @@ struct DirectionalLight {
     DirectionalLight();
     ~DirectionalLight();
 
-    void setAmbient(const glm::vec3& color, GLfloat intensity);
-    void setDiffuse(const glm::vec3& color, const glm::vec3& direction, GLfloat intensity);
+    void setLight(const glm::vec3& color, GLfloat ambientIntensity, const glm::vec3& diffuseDirection, GLfloat diffuseIntensity);
+    void setMainShader(Shader* shader);
+    void setShadowShader(Shader* shader);
     void setShadowMap(GLuint width, GLuint height, GLfloat near, GLfloat far);
     void updateLightProjectionView();
 
-    void use(GLint ambientColorLocation, GLint ambientIntensityLocation,
-             GLint diffuseColorLocation, GLint diffuseDirectionLocation, GLint diffuseIntensityLocation);
+    void useShadow();
+    void use();
 
-    glm::vec3 ambientColor;
+    glm::vec3 color;
     GLfloat ambientIntensity;
-    glm::vec3 diffuseColor;
     glm::vec3 diffuseDirection;
     GLfloat diffuseIntensity;
+    Shader* mainShader;
+    Shader* shadowShader;
 
-    DirectionalShadowMap map;
+    DirectionalShadowMap shadowMap;
     glm::mat4 lightProjectionView;
 };

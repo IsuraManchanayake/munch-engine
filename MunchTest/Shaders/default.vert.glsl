@@ -1,10 +1,12 @@
 #version 330
 
+// Inputs
 layout (location=0) in vec3 pos;
 layout (location=1) in vec2 tex;
 layout (location=2) in vec3 nrm;
 layout (location=3) in vec3 tgt;
 
+// Outputs
 out vec4 vCol;
 out vec2 vTex;
 out vec3 fNrm;
@@ -13,14 +15,11 @@ out vec4 vPos;
 out mat3 TBN;
 out vec4 directionalLightSpacePos;
 
+// Uniforms
 uniform mat4 model;
 uniform mat4 projection;
 uniform mat4 view;
-
 uniform mat4 directionalLightTransform;
-
-uniform int useDisplaceMap;
-uniform sampler2D displaceMap;
 
 void main() {
     vPos = view * model * vec4(pos, 1.0);
@@ -37,10 +36,5 @@ void main() {
     vec3 B = normalize(cross(N, T));
     TBN = mat3(T, B, N);
 
-    // if(useDisplaceMap == 1) {
-    //     vec4 p = 0.6 * vec4(N * (2 * texture(displaceMap, vTex).r - 1), 0.f) + model * vec4(pos, 1.0);
-    //     gl_Position = projection * view * p;
-    // } else {
-        gl_Position = projection * view * model * vec4(pos, 1.0);
-    // }
+    gl_Position = projection * view * model * vec4(pos, 1.0);
 }

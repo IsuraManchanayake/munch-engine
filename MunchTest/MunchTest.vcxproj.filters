@@ -68,12 +68,6 @@
     <ClCompile Include="src\Window\MainWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Layer\GBufferLayer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Layer\NormalMapTest.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Layer\GraphicLayer.h">
@@ -83,12 +77,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Window\MainWindow.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Layer\GBufferLayer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Layer\NormalMapTest.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

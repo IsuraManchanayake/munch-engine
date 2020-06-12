@@ -1,49 +1,25 @@
 #pragma once
 
-#include <GL/glew.h>
+#include "Graphics/Material.h"
+#include "Graphics/Mesh.h"
 
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
+#include <vector>
+#include <unordered_map>
 
-#include "Graphics/Mesh.h"
-#include "Graphics/Texture.h"
-#include "Graphics/Shader.h"
-#include "Graphics/Material.h"
+struct Model {
+    Model();
 
-struct Object {
-    Object();
-    ~Object();
-
-    void load(const std::string& path);
+    static Model* load(const std::string& path);
     void loadNode(aiNode* node, const aiScene* scene);
     void loadMesh(aiMesh* mesh, const aiScene* scene);
     void loadMaterials(const aiScene* scene);
 
     std::vector<Mesh> meshes;
-    std::vector<Texture> albedos;
-    std::vector<Texture> normals;
-    std::vector<Texture> displacements;
-    std::vector<unsigned> meshToTex;
-};
+    std::vector<Material> materials;
+    std::vector<unsigned> meshToMaterial;
 
-struct Model {
-    Object* object;
-    glm::mat4 transform;
-    Material material;
-
-    static std::unordered_map<std::string, Object*> loadedObjects;
-
-    Model();
-    Model(const std::string& path, glm::mat4 transform, Material material);
-    static Model cube(glm::mat4 transform, Material material);
-    static Model sphere(glm::mat4 transform, Material material);
-    static Model plane(glm::mat4 transform, Material material);
-    static Model terrain(glm::mat4 transform, Material material);
-    static Model cube(glm::mat4 transform, Material material, Texture albedo, Texture normal, Texture displacement);
-    static Model sphere(glm::mat4 transform, Material material, Texture albedo, Texture normal, Texture displacement);
-    static Model plane(glm::mat4 transform, Material material, Texture albedo, Texture normal, Texture displacement);
-    static Model terrain(glm::mat4 transform, Material material, Texture albedo, Texture normal, Texture displacement);
+    static std::unordered_map<std::string, Model*> loadedModels; // only fron files
 };

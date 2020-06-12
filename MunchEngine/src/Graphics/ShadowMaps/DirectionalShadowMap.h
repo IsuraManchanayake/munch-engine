@@ -16,7 +16,7 @@ struct DirectionalShadowMap : Resource {
     void read(GLenum textureUnit);
     void clear();
 
-    GLuint fbo, map;
+    GLuint fbo, textureId;
     GLuint width, height;
     GLfloat near, far;
 };

@@ -1,10 +1,10 @@
 #pragma once
 
+#include "Graphics/Resource.h"
+#include "Graphics/Texture.h"
+
 #include <GL/glew.h>
 #include <glm/glm.hpp>
-
-#include "Resource.h"
-
 #include <string>
 #include <unordered_map>
 
@@ -25,6 +25,8 @@ struct Shader : Resource {
     void setf3(const std::string& uniformName, GLfloat val1, GLfloat val2, GLfloat val3);
     void setf3(const std::string& uniformName, const glm::vec3& val);
     void setm4(const std::string& uniformName, const glm::mat4& val);
+    void settx(const std::string& uniformName, Texture& texture);
+    void settx(const std::string& uniformName, GLuint fbo);
     static void seti1(GLint uniform, GLint val);
     static void setf1(GLint uniform, GLfloat val);
     static void setf3(GLint uniform, GLfloat val1, GLfloat val2, GLfloat val3);
@@ -41,4 +43,5 @@ struct Shader : Resource {
     
     GLuint id;
     std::unordered_map<std::string, GLint> uniforms;
+    std::unordered_map<std::string, GLint> tunits;
 };

@@ -5,7 +5,7 @@
 #include <glm/gtc/type_ptr.hpp>
 
 Shader::Shader() 
-    : Resource(), id(0), uniforms() {}
+    : Resource(), id(0), uniforms(), tunits() {}
 
 Shader::~Shader() {
     clear();
@@ -64,6 +64,27 @@ void Shader::setf3(const std::string& uniformName, const glm::vec3& val) {
 void Shader::setm4(const std::string& uniformName, const glm::mat4& val) {
     GLint uniform = getUniformLocation(uniformName);
     setm4(uniform, val);
+}
+
+void Shader::settx(const std::string& uniformName, Texture& texture) {
+    auto pos = tunits.find(uniformName);
+    if(pos == tunits.end()) {
+        Logger::error("Invalid texture assignment!");
+        error_exit(1);
+    }
+    unsigned tunit = pos->second;
+    texture.use(GL_TEXTURE0 + tunit);
+}
+
+void Shader::settx(const std::string& uniformName, GLuint textureId) {
+    auto pos = tunits.find(uniformName);
+    if(pos == tunits.end()) {
+        Logger::error("Invalid texture assignment!");
+        error_exit(1);
+    }
+    unsigned tunit = pos->second;
+    glActiveTexture(GL_TEXTURE0 + tunit);
+    glBindTexture(GL_TEXTURE_2D, textureId);
 }
 
 void Shader::seti1(GLint uniform, GLint val) {

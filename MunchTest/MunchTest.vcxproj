@@ -178,9 +178,7 @@
     <None Include="Shaders\skybox.vert.glsl" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Layer\GBufferLayer.cpp" />
     <ClCompile Include="src\Layer\GraphicLayer.cpp" />
-    <ClCompile Include="src\Layer\NormalMapTest.cpp" />
     <ClCompile Include="src\MunchTest.cpp" />
     <ClCompile Include="src\Window\EditorWindow.cpp" />
     <ClCompile Include="src\Window\MainWindow.cpp" />
@@ -191,9 +189,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Layer\GBufferLayer.h" />
     <ClInclude Include="src\Layer\GraphicLayer.h" />
-    <ClInclude Include="src\Layer\NormalMapTest.h" />
     <ClInclude Include="src\Window\EditorWindow.h" />
     <ClInclude Include="src\Window\MainWindow.h" />
   </ItemGroup>

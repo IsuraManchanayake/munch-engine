@@ -3,7 +3,7 @@
 #include "Core/Logger.h"
 
 DirectionalShadowMap::DirectionalShadowMap()
-    : Resource(), fbo(), map(), width(), height(), near(), far() {
+    : Resource(), fbo(), textureId(), width(), height(), near(), far() {
 }
 
 DirectionalShadowMap::~DirectionalShadowMap() {
@@ -15,10 +15,10 @@ void DirectionalShadowMap::clear() {
     if(fbo) {
         glDeleteFramebuffers(1, &fbo);
     }
-    if(map) {
-        glDeleteTextures(1, &map);
+    if(textureId) {
+        glDeleteTextures(1, &textureId);
     }
-    fbo = map = 0;
+    fbo = textureId = 0;
 }
 
 bool DirectionalShadowMap::init(GLuint width, GLuint height, GLfloat near, GLfloat far) {
@@ -29,8 +29,8 @@ bool DirectionalShadowMap::init(GLuint width, GLuint height, GLfloat near, GLflo
 
     glGenFramebuffers(1, &fbo);
     
-    glGenTextures(1, &map);
-    glBindTexture(GL_TEXTURE_2D, map);
+    glGenTextures(1, &textureId);
+    glBindTexture(GL_TEXTURE_2D, textureId);
 
     glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, width, height, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER); 
@@ -41,7 +41,7 @@ bool DirectionalShadowMap::init(GLuint width, GLuint height, GLfloat near, GLflo
     glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor);
     
     glBindFramebuffer(GL_FRAMEBUFFER, fbo);
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, map, 0);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, textureId, 0);
 
     glDrawBuffer(GL_NONE);
     glReadBuffer(GL_NONE);
@@ -65,5 +65,5 @@ void DirectionalShadowMap::write() {
 
 void DirectionalShadowMap::read(GLenum textureUnit) {
     glActiveTexture(textureUnit);
-    glBindTexture(GL_TEXTURE_2D, map);
+    glBindTexture(GL_TEXTURE_2D, textureId);
 }
