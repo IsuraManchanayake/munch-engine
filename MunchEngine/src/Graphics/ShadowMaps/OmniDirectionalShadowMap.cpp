@@ -3,7 +3,7 @@
 #include "Core/Logger.h"
 
 OmniDirectionalShadowMap::OmniDirectionalShadowMap()
-    : Resource(), fbo(), map(), width(), height() {
+    : Resource(), fbo(), textureId(), width(), height() {
 }
 
 OmniDirectionalShadowMap::~OmniDirectionalShadowMap() {
@@ -15,10 +15,10 @@ void OmniDirectionalShadowMap::clear() {
     if(fbo) {
         glDeleteFramebuffers(1, &fbo);
     }
-    if(map) {
-        glDeleteTextures(1, &map);
+    if(textureId) {
+        glDeleteTextures(1, &textureId);
     }
-    fbo = map = 0;
+    fbo = textureId = 0;
 }
 
 bool OmniDirectionalShadowMap::init(GLuint width, GLuint height, GLfloat near, GLfloat far) {
@@ -28,8 +28,8 @@ bool OmniDirectionalShadowMap::init(GLuint width, GLuint height, GLfloat near, G
     this->far = far;
 
     glGenFramebuffers(1, &fbo);
-    glGenTextures(1, &map);
-    glBindTexture(GL_TEXTURE_CUBE_MAP, map);
+    glGenTextures(1, &textureId);
+    glBindTexture(GL_TEXTURE_CUBE_MAP, textureId);
 
     for(size_t i = 0; i < 6; i++) {
         glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_DEPTH_COMPONENT, 
@@ -43,7 +43,7 @@ bool OmniDirectionalShadowMap::init(GLuint width, GLuint height, GLfloat near, G
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
     glBindFramebuffer(GL_FRAMEBUFFER, fbo);
-    glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, map, 0);
+    glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, textureId, 0);
 
     glDrawBuffer(GL_NONE);
     glReadBuffer(GL_NONE);
@@ -62,7 +62,7 @@ void OmniDirectionalShadowMap::write() {
 
 void OmniDirectionalShadowMap::read(GLenum textureUnit) {
     glActiveTexture(textureUnit);
-    glBindTexture(GL_TEXTURE_CUBE_MAP, map);
+    glBindTexture(GL_TEXTURE_CUBE_MAP, textureId);
 }
 
 bool OmniDirectionalShadowMap::validate() {

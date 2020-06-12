@@ -17,7 +17,7 @@ struct OmniDirectionalShadowMap : Resource {
     void read(GLenum textureUnit);
     bool validate();
 
-    GLuint fbo, map;
+    GLuint fbo, textureId;
     GLuint width, height;
     GLfloat near, far;
 };

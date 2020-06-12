@@ -35,14 +35,6 @@ void DirectionalLight::setShadowShader(Shader* shader) {
     this->shadowShader = shader;
 }
 
-void DirectionalLight::useShadow() {
-    shadowShader->use();
-    shadowShader->setm4("directionalLightTransform", lightProjectionView);
-    glViewport(0, 0, shadowMap.width, shadowMap.height);
-    shadowMap.write();
-    glClear(GL_DEPTH_BUFFER_BIT);
-}
-
 void DirectionalLight::use() {
     mainShader->use();
     mainShader->setf3("directionalLight.color", color);
@@ -50,5 +42,5 @@ void DirectionalLight::use() {
     mainShader->setf3("directionalLight.diffuseDirection", diffuseDirection);
     mainShader->setf1("directionalLight.diffuseIntensity", diffuseIntensity);
     mainShader->setm4("directionalLightTransform", lightProjectionView);
-    mainShader->settx("directionalLight.shadowMap", shadowMap.textureId);
+    mainShader->settx2d("directionalLight.shadowMap", shadowMap.textureId);
 }

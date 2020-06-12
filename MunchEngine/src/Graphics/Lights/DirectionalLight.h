@@ -1,12 +1,11 @@
 #pragma once
 
-#include <GL/glew.h>
-
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-
 #include "Graphics/ShadowMaps/DirectionalShadowMap.h"
 #include "Graphics/Shader.h"
+
+#include <GL/glew.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
 struct DirectionalLight {
     DirectionalLight();
@@ -18,7 +17,8 @@ struct DirectionalLight {
     void setShadowMap(GLuint width, GLuint height, GLfloat near, GLfloat far);
     void updateLightProjectionView();
 
-    void useShadow();
+    template<typename Func>
+    void useShadow(Func&& renderStep);
     void use();
 
     glm::vec3 color;
@@ -31,3 +31,15 @@ struct DirectionalLight {
     DirectionalShadowMap shadowMap;
     glm::mat4 lightProjectionView;
 };
+
+#pragma massage("TODO: Remove opengl calls in directional light shadow map calculation")
+template<typename Func>
+void DirectionalLight::useShadow(Func&& renderStep) {
+    shadowShader->use();
+    shadowShader->setm4("directionalLightTransform", lightProjectionView);
+    glViewport(0, 0, shadowMap.width, shadowMap.height);
+    shadowMap.write();
+    glClear(GL_DEPTH_BUFFER_BIT);
+    renderStep(shadowShader);
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+}

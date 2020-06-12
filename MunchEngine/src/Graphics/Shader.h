@@ -26,7 +26,8 @@ struct Shader : Resource {
     void setf3(const std::string& uniformName, const glm::vec3& val);
     void setm4(const std::string& uniformName, const glm::mat4& val);
     void settx(const std::string& uniformName, Texture& texture);
-    void settx(const std::string& uniformName, GLuint fbo);
+    void settx2d(const std::string& uniformName, GLuint fbo);
+    void settx3d(const std::string& uniformName, GLuint fbo);
     static void seti1(GLint uniform, GLint val);
     static void setf1(GLint uniform, GLfloat val);
     static void setf3(GLint uniform, GLfloat val1, GLfloat val2, GLfloat val3);

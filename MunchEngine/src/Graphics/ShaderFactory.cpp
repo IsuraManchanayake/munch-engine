@@ -40,3 +40,9 @@ Shader* ShaderFactory::dirShadowShader() {
     shader->create("Shaders/directional_shadow_map.vert.glsl", "Shaders/directional_shadow_map.frag.glsl");
     return shader;
 }
+
+Shader* ShaderFactory::omniDirShadowShader() {
+    Shader* shader = new Shader;
+    shader->create("Shaders/omni_shadow_map.vert.glsl", "Shaders/omni_shadow_map.geom.glsl", "Shaders/omni_shadow_map.frag.glsl");
+    return shader;
+}

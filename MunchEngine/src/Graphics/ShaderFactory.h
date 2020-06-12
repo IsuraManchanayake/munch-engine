@@ -5,4 +5,8 @@
 struct ShaderFactory {
     static Shader* defaultShader();
     static Shader* dirShadowShader();
+    static Shader* omniDirShadowShader();
+
+private:
+    ShaderFactory();
 };

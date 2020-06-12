@@ -246,12 +246,13 @@ void main() {
 
     vec4 ambientColor = getAmbientColor();
     vec4 directionalColor = getDirectionalColor();
-    // vec4 pointLightsColor = getPointLightsColor();
-    // vec4 spotLightsColor = getSpotLightsColor();
+    vec4 pointLightsColor = getPointLightsColor();
+    vec4 spotLightsColor = getSpotLightsColor();
     // vec4 reflectedColor = getSkyBoxReflectColor();
     // vec4 refractedColor = getSkyBoxRefractColor();
 
     // color = vec4(TBN[2], 1.0);
-    color = texture(material.albedo, vTex) * (ambientColor + directionalColor);// + pointLightsColor + spotLightsColor); // + reflectedColor + refractedColor);
+    // color = pointLightsColor;
+    color = texture(material.albedo, vTex) * (ambientColor + directionalColor + pointLightsColor +  spotLightsColor); // + reflectedColor + refractedColor);
     // color.rgb = pow(color.rgb, vec3(1/2.2));
 }

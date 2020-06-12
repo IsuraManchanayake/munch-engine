@@ -2,8 +2,11 @@
 
 #include "Layer/Layer.h"
 #include "Graphics/Entity.h"
-#include "Graphics/Lights/DirectionalLight.h"
 #include "Graphics/Camera.h"
+#include "Graphics/Lights/DirectionalLight.h"
+#include "Graphics/Lights/PointLight.h"
+#include "Graphics/Lights/SpotLight.h"
+#include "Graphics/HDRI.h"
 
 #include <vector>
 
@@ -24,7 +27,12 @@ struct GraphicLayer : Layer {
     std::vector<Shader*> shaders;
     Shader* defaultShader;
     DirectionalLight directionalLight;
+    std::vector<PointLight> pointLights;
+    std::vector<SpotLight> spotLights;
     Camera camera;
-    Shader dirDebugShader;
+    HDRI hdri;
     glm::mat4 projection;
+    
+    // Debug variables
+    Shader dirDebugShader;
 };
