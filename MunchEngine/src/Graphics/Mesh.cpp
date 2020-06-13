@@ -270,9 +270,11 @@ void Mesh::createSphere() {
     for(size_t i = 0; i <= lgs; i++) {
         vpb(0, 0, 1, i * (1.f / lgs), 0, 0, 0, 1);
     }
+    static const float alpha = 0.001f * 2;
     for(size_t i = 1; i < lts; i++) {
         for(size_t j = 0; j <= lgs; j++) {
-            float a1 = i * (pi / lts);
+            // float a1 = i * (pi / lts);
+            float a1 = alpha / 2 + (i - 1) * ((pi - alpha) / (lts - 2));
             float a2 = j * ((pi * 2.f) / lgs);
             float z = cos(a1);
             float r = sin(a1);
@@ -287,9 +289,9 @@ void Mesh::createSphere() {
         vpb(0, 0, -1, i * (1.f / lgs), 1, 0, 0, -1);
     }
     // top hull
-    for(size_t i = 0; i < lgs; i++) {
-        ipb(i, 1 + i + lgs, 2 + i + lgs);
-    }
+    // for(size_t i = 0; i < lgs; i++) {
+    //     ipb(i, 1 + i + lgs, 2 + i + lgs);
+    // }
     // body
     for(size_t i = 0; i < lts - 2; i++) {
         for(size_t j = 0; j < lgs; j++) {
@@ -302,12 +304,12 @@ void Mesh::createSphere() {
         }
     }
     // bottom hull
-    for(size_t i = 0; i < lgs; i++) {
-        size_t idx1 = lgs + 1 + (lgs + 1) * (lts - 2) + i;
-        size_t idx2 = lgs + 1 + (lgs + 1) * (lts - 2) + i + 1;
-        size_t idx3 = lgs + 1 + (lgs + 1) * (lts - 1) + i;
-        ipb(idx2, idx1, idx3);
-    }
+    // for(size_t i = 0; i < lgs; i++) {
+    //     size_t idx1 = lgs + 1 + (lgs + 1) * (lts - 2) + i;
+    //     size_t idx2 = lgs + 1 + (lgs + 1) * (lts - 2) + i + 1;
+    //     size_t idx3 = lgs + 1 + (lgs + 1) * (lts - 1) + i;
+    //     ipb(idx2, idx1, idx3);
+    // }
     // create(vertices.data(), tangents.data(), indices.data(), vertices.size(), indices.size());
     create(vertices.data(), indices.data(), vertices.size(), indices.size());
 }

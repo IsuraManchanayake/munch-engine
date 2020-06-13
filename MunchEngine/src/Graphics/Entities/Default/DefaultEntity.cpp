@@ -17,6 +17,9 @@ void DefaultEntity::render() {
         shader->settx("material.displacement", material.displacement);
         shader->settx("material.specular", material.specular);
         shader->settx("material.gloss", material.gloss);
+        shader->settx("material.roughness", material.roughness);
+        shader->settx("material.metallic", material.metallic);
+        shader->settx("material.ao", material.ao);
 
         auto& mesh = model->meshes[i];
         mesh.render();

@@ -146,9 +146,9 @@ float getOmniShadowFactorS(SpotLight light) {
 
 
 vec4 diffuse(vec3 color, vec3 direction, float intensity, float shadowFactor) {
-    if(intensity < 1e-5) {
-        return vec4(0.f, 0.f, 0.f, 0.f);
-    }
+    // if(intensity < 1e-5) {
+    //     return vec4(0.f, 0.f, 0.f, 0.f);
+    // }
     float diffuseFactor = max(0.f, dot(normalize(fNrm), normalize(direction)));
     float specularFactor = 0.f;
     if(diffuseFactor > 0.f) {

@@ -4,6 +4,8 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "Graphics/stb_image.h"
 
+std::unordered_map<std::string, GLuint> Texture::loadedTextures;
+
 Texture::Texture() 
     : Resource(), id(), width(), height(), bitDepth() {
 }
@@ -13,6 +15,12 @@ Texture::~Texture() {
 }
 
 void Texture::create(const std::string& fileLocation) {
+    auto pos = loadedTextures.find(fileLocation);
+    if(pos != loadedTextures.end()) {
+        id = pos->second;
+        copied = true;
+        return;
+    }
     unsigned char* data = stbi_load(
         fileLocation.c_str(), &width, &height, &bitDepth, 0);
     if (!data) {
@@ -39,6 +47,7 @@ void Texture::create(const std::string& fileLocation) {
 
     glBindTexture(GL_TEXTURE_2D, 0);
     stbi_image_free(data);
+    loadedTextures.emplace(fileLocation, id);
 }
 
 Texture Texture::createColorTexture(unsigned width, unsigned height, float r, float g, float b) {
@@ -58,6 +67,35 @@ Texture Texture::createColorTexture(unsigned width, unsigned height, float r, fl
     glGenTextures(1, &texture.id);
     glBindTexture(GL_TEXTURE_2D, texture.id);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+    glGenerateMipmap(GL_TEXTURE_2D);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+    glBindTexture(GL_TEXTURE_2D, 0);
+
+    delete[] data;
+
+    return Texture {texture};
+}
+
+Texture Texture::createColorTexture(unsigned width, unsigned height, float r) {
+    Texture texture;
+
+    texture.width = width;
+    texture.height = height;
+    texture.bitDepth = 1;
+    unsigned char* data = new unsigned char[width * height * 1];
+
+    for(size_t i = 0, s = ((size_t)width) * height; i < s; i++) {
+        data[1 * i + 0] = (unsigned char) (r * 255);
+    }
+
+    glGenTextures(1, &texture.id);
+    glBindTexture(GL_TEXTURE_2D, texture.id);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, width, height, 0, GL_RED, GL_UNSIGNED_BYTE, data);
     glGenerateMipmap(GL_TEXTURE_2D);
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);

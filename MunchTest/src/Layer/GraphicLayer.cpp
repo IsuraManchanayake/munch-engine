@@ -88,7 +88,7 @@ void GraphicLayer::setup() {
         glm::mat4 transform(1.f);
         transform = glm::translate(transform, 3.f * V3::_010);
         transform = glm::scale(transform, 3.f * V3::_111);
-        transform = glm::rotate(transform, glm::radians(90.f), V3::_100);
+        transform = glm::rotate(transform, glm::radians(-90.f), V3::_100);
         sphere->transform = transform;
         sphere->model->materials[0].attachSpecular(1.0f);
         // sphere->model->materials[0].attachGloss(10.f);
@@ -103,7 +103,7 @@ void GraphicLayer::setup() {
     entities.push_back(sphere);
     entities.push_back(plane);
 
-    hdri.create("Textures/quarry_03.jpg");
+    hdri.create("Textures/quarry_03_4k.jpg");
 
     projection = glm::perspective(glm::radians(60.f), static_cast<float>(width) / height, 0.1f, 100.f);
 

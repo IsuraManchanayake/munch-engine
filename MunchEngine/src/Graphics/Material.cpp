@@ -6,7 +6,7 @@ const unsigned Material::defaultTextureMapWidth;
 const unsigned Material::defaultTextureMapHeight;
 
 Material::Material()
-    : albedo(), normal(), displacement(), specular(), gloss() {
+    : albedo(), normal(), displacement(), specular(), gloss(), roughness(), metallic(), ao() {
 }
 
 Material::~Material() {
@@ -15,6 +15,9 @@ Material::~Material() {
     displacement.clear();
     specular.clear();
     gloss.clear();
+    roughness.clear();
+    metallic.clear();
+    ao.clear();
 }
 
 Material& Material::operator=(const Material& tm) {
@@ -35,19 +38,31 @@ void Material::attach(TextureMapType type, std::string path) {
 
 void Material::attachSpecular(float intensity) {
     intensity = clamp(intensity, 0.0f, 1.0f);
-    attachColor(TextureMapType::specular, intensity, intensity, intensity);
+    attachColor(TextureMapType::specular, intensity);
 }
 
 void Material::attachGloss(float shininess) {
     shininess = clamp(shininess, 0.0f, 255.0f);
     shininess /= 255.0f;
-    attachColor(TextureMapType::gloss, shininess, shininess, shininess);
+    attachColor(TextureMapType::gloss, shininess);
 }
 
 void Material::attachDisplacement(float displacement) {
     displacement = clamp(displacement, -1.0f, 1.0f);
     displacement = (displacement + 1) / 2;
-    attachColor(TextureMapType::displacement, displacement, displacement, displacement);
+    attachColor(TextureMapType::displacement, displacement);
+}
+
+void Material::attachRoughness(float roughness) {
+    attachColor(TextureMapType::roughness, roughness);
+}
+
+void Material::attachMetallic(float metallic) {
+    attachColor(TextureMapType::metallic, metallic);
+}
+
+void Material::attachAO(float ao) {
+    attachColor(TextureMapType::ao, ao);
 }
 
 void Material::attachColor(TextureMapType type, const glm::vec3& color) {
@@ -56,6 +71,10 @@ void Material::attachColor(TextureMapType type, const glm::vec3& color) {
 
 void Material::attachColor(TextureMapType type, float r, float g, float b) {
     maps[static_cast<size_t>(type)] = Texture::createColorTexture(defaultTextureMapWidth, defaultTextureMapHeight, r, g, b);
+}
+
+void Material::attachColor(TextureMapType type, float r) {
+    maps[static_cast<size_t>(type)] = Texture::createColorTexture(defaultTextureMapWidth, defaultTextureMapHeight, r);
 }
 
 void Material::attachDefault(TextureMapType type) {
@@ -75,8 +94,17 @@ void Material::attachDefault(TextureMapType type) {
         case TextureMapType::gloss:
             attachColor(type, 0.0f, 0.0f, 0.0f);
             break;
+        case TextureMapType::roughness:
+            attachColor(type, 0.0f, 0.0f, 0.0f);
+            break;
+        case TextureMapType::metallic:
+            attachColor(type, 0.0f, 0.0f, 0.0f);
+            break;
+        case TextureMapType::ao:
+            attachColor(type, 1.0f, 1.0f, 1.0f);
+            break;
         default:
-            Logger::error("Invalid or unimplemented TextureMapType");
+            Logger::warn("Invalid or unimplemented TextureMapType");
     }
 }
 

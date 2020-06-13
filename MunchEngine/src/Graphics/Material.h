@@ -7,10 +7,13 @@
 
 enum class TextureMapType {
     albedo = 0, // Keep at 0
-    normal = 1,
-    displacement = 2,
-    specular = 3,
-    gloss = 4,
+    normal,
+    displacement,
+    specular,
+    gloss,
+    roughness,
+    metallic,
+    ao,
     None // Keep at the end
 };
 
@@ -29,8 +32,12 @@ struct Material {
     void attachSpecular(float intensity);
     void attachGloss(float shininess);
     void attachDisplacement(float displacement);
+    void attachRoughness(float roughness);
+    void attachMetallic(float metallic);
+    void attachAO(float ao);
     void attachColor(TextureMapType type, const glm::vec3& color);
     void attachColor(TextureMapType type, float r, float g, float b);
+    void attachColor(TextureMapType type, float r);
     void attachDefault(TextureMapType type);
 
     static Material defaultMaterial();
@@ -42,6 +49,9 @@ struct Material {
             Texture displacement;
             Texture specular;
             Texture gloss;
+            Texture roughness;
+            Texture metallic;
+            Texture ao;
         };
         Texture maps[Material::textureTypeCount];
     };

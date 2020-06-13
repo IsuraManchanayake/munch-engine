@@ -15,9 +15,9 @@ void DirectionalLight::setShadowMap(GLuint width, GLuint height, GLfloat near, G
 }
 
 void DirectionalLight::updateLightProjectionView() {
-    static const float size = 10.f;
+    static const float size = 20.f;
     lightProjectionView = glm::ortho(-size, size, -size, size, shadowMap.near, shadowMap.far)
-        * glm::lookAt(diffuseDirection * -5.f, { 0.0f, 0.0f, 0.0f }, { 0.0f, 1.0f, 0.0f });
+        * glm::lookAt(diffuseDirection * -10.f, { 0.0f, 0.0f, 0.0f }, { 0.0f, 1.0f, 0.0f });
 }
     
 void DirectionalLight::setLight(const glm::vec3& color, GLfloat ambientIntensity, const glm::vec3& diffuseDirection, GLfloat diffuseIntensity) {

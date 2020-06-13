@@ -67,20 +67,14 @@ void Shader::setm4(const std::string& uniformName, const glm::mat4& val) {
 }
 
 void Shader::settx(const std::string& uniformName, Texture& texture) {
-    auto pos = tunits.find(uniformName);
-    if(pos == tunits.end()) {
-        Logger::error("Invalid texture assignment!");
-        error_exit(1);
-    }
-    unsigned tunit = pos->second;
-    texture.use(GL_TEXTURE0 + tunit);
+    settx2d(uniformName, texture.id);
 }
 
 void Shader::settx2d(const std::string& uniformName, GLuint textureId) {
     auto pos = tunits.find(uniformName);
     if(pos == tunits.end()) {
-        Logger::error("Invalid texture assignment!");
-        error_exit(1);
+        Logger::warn("Invalid texture assignment!");
+        return;
     }
     unsigned tunit = pos->second;
     glActiveTexture(GL_TEXTURE0 + tunit);
@@ -90,8 +84,8 @@ void Shader::settx2d(const std::string& uniformName, GLuint textureId) {
 void Shader::settx3d(const std::string& uniformName, GLuint textureId) {
     auto pos = tunits.find(uniformName);
     if(pos == tunits.end()) {
-        Logger::error("Invalid texture assignment!");
-        error_exit(1);
+        Logger::warn("Invalid texture assignment!");
+        return;
     }
     unsigned tunit = pos->second;
     glActiveTexture(GL_TEXTURE0 + tunit);

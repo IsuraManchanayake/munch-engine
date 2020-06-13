@@ -47,3 +47,38 @@ Shader* ShaderFactory::omniDirShadowShader() {
     shader->create("Shaders/omni_shadow_map.vert.glsl", "Shaders/omni_shadow_map.geom.glsl", "Shaders/omni_shadow_map.frag.glsl");
     return shader;
 }
+
+Shader* ShaderFactory::pbrShader() {
+    static const unsigned maxPointLights = 3;
+    static const unsigned maxSpotLights = 3;
+    Shader* shader = new Shader;
+    shader->create("Shaders/pbr.vert.glsl", "Shaders/pbr.frag.glsl");
+    std::vector<std::string> uniformTextureNames = {
+        "directionalLight.shadowMap",
+        "material.albedo",
+        "material.normal",
+        "material.displacement",
+        "material.specular",
+        "material.gloss",
+        "material.roughness",
+        "material.metallic",
+        "material.ao",
+        "hdri",
+    };
+    for(unsigned i = 0; i < maxPointLights; i++) {
+        uniformTextureNames.push_back(cat("pointLights[", i, "].shadowMap"));
+    }
+    for(unsigned i = 0; i < maxSpotLights; i++) {
+        uniformTextureNames.push_back(cat("spotLights[", i, "].shadowMap"));
+    }
+    for(size_t i = 0; i < uniformTextureNames.size(); i++) {
+        shader->tunits[uniformTextureNames[i]] = i;
+    }
+
+    // Bind texture units
+    shader->use();
+    for(auto& [uniformName, tunit] : shader->tunits) {
+        shader->seti1(uniformName, tunit);
+    }
+    return shader;
+}
