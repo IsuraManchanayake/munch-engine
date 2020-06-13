@@ -39,8 +39,8 @@ void Material::attachSpecular(float intensity) {
 }
 
 void Material::attachGloss(float shininess) {
-    shininess = clamp(shininess, 0.0f, 8192.0f);
-    shininess /= 8192.0f;
+    shininess = clamp(shininess, 0.0f, 255.0f);
+    shininess /= 255.0f;
     attachColor(TextureMapType::gloss, shininess, shininess, shininess);
 }
 

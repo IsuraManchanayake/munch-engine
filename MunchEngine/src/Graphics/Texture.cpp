@@ -72,6 +72,12 @@ Texture Texture::createColorTexture(unsigned width, unsigned height, float r, fl
     return Texture {texture};
 }
 
+Texture Texture::createImageTexture(const std::string& path) {
+    Texture texture;
+    texture.create(path);
+    return Texture {texture};
+}
+
 void Texture::use(GLenum textureUnit) {
     glActiveTexture(textureUnit);
     glBindTexture(GL_TEXTURE_2D, id);

@@ -65,6 +65,7 @@ uniform SpotLight spotLights[MAX_POINT_LIGHTS];
 uniform int pointLightCount;
 uniform int spotLightCount;
 uniform vec3 eye;
+uniform sampler2D hdri;
 
 float map(float x, float a, float b, float p, float q) {
     return p + (q - p) * ((x - a) / (b - a));
@@ -153,10 +154,8 @@ vec4 diffuse(vec3 color, vec3 direction, float intensity, float shadowFactor) {
     if(diffuseFactor > 0.f) {
         vec3 reflected = normalize(reflect(-direction, fNrm));
         vec3 eyeDirection = normalize(eye - fPos);
-        float reflectFactor = dot(reflected, eyeDirection);
-        if(reflectFactor > 0.f) {
-            specularFactor = pow(reflectFactor, fGloss);
-        }
+        vec3 halfDir = normalize(direction + eyeDirection);
+        specularFactor = pow(max(0.0f, dot(halfDir, fNrm)), fGloss);
     }
     vec3 result = color * (diffuseFactor + specularFactor * fSpecular);
     return vec4(result, 1.f) * intensity * (1 - shadowFactor);
@@ -242,7 +241,7 @@ void main() {
 
     fSpecular = texture(material.specular, vTex).r;
 
-    fGloss = texture(material.gloss, vTex).r * 8192.0f;
+    fGloss = texture(material.gloss, vTex).r * 255.0f;
 
     vec4 ambientColor = getAmbientColor();
     vec4 directionalColor = getDirectionalColor();
@@ -255,4 +254,13 @@ void main() {
     // color = pointLightsColor;
     color = texture(material.albedo, vTex) * (ambientColor + directionalColor + pointLightsColor +  spotLightsColor); // + reflectedColor + refractedColor);
     // color.rgb = pow(color.rgb, vec3(1/2.2));
+
+    // Desaturate 
+    // color.rgb = log2(color.rgb + 1);
+    // vec3 grayXfer = vec3(0.3, 0.59, 0.11);
+	// vec3 gray = vec3(dot(grayXfer, color.rgb));
+	// color.rgb = mix(color.rgb, gray, 0.3);
+    
+    // Contrast
+    // color.rgb = (color.rgb - 0.5f) * max(2.0f, 0.0f) + 0.5f;
 }

@@ -15,6 +15,7 @@ Shader* ShaderFactory::defaultShader() {
         "material.displacement",
         "material.specular",
         "material.gloss",
+        "hdri",
     };
     for(unsigned i = 0; i < maxPointLights; i++) {
         uniformTextureNames.push_back(cat("pointLights[", i, "].shadowMap"));

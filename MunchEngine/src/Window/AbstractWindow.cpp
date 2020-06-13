@@ -33,6 +33,7 @@ void AbstractWindow::init() {
     createCallbacks();
     glfwSetWindowUserPointer(window, this);
     glEnable(GL_DEPTH_TEST);
+    glEnable(GL_MULTISAMPLE); 
 }
 
 bool AbstractWindow::shouldClose() {
