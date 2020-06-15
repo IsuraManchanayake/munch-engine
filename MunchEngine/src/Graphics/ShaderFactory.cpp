@@ -63,7 +63,7 @@ Shader* ShaderFactory::pbrShader() {
         "material.roughness",
         "material.metallic",
         "material.ao",
-        "hdri",
+        "irradianceMap",
     };
     for(unsigned i = 0; i < maxPointLights; i++) {
         uniformTextureNames.push_back(cat("pointLights[", i, "].shadowMap"));
@@ -76,6 +76,38 @@ Shader* ShaderFactory::pbrShader() {
     }
 
     // Bind texture units
+    shader->use();
+    for(auto& [uniformName, tunit] : shader->tunits) {
+        shader->seti1(uniformName, tunit);
+    }
+    return shader;
+}
+
+Shader* ShaderFactory::hdriShader() {
+    Shader* shader = new Shader;
+    shader->create("Shaders/hdri.vert.glsl", "Shaders/hdri.frag.glsl");
+    std::vector<std::string> uniformTextureNames = {
+        "hdri",
+    };
+    for(size_t i = 0; i < uniformTextureNames.size(); i++) {
+        shader->tunits[uniformTextureNames[i]] = i;
+    }
+    shader->use();
+    for(auto& [uniformName, tunit] : shader->tunits) {
+        shader->seti1(uniformName, tunit);
+    }
+    return shader;
+}
+
+Shader* ShaderFactory::irradianceShader() {
+    Shader* shader = new Shader;
+    shader->create("Shaders/irradiance.vert.glsl", "Shaders/irradiance.frag.glsl");
+    std::vector<std::string> uniformTextureNames = {
+        "hdri",
+    };
+    for(size_t i = 0; i < uniformTextureNames.size(); i++) {
+        shader->tunits[uniformTextureNames[i]] = i;
+    }
     shader->use();
     for(auto& [uniformName, tunit] : shader->tunits) {
         shader->seti1(uniformName, tunit);

@@ -3,6 +3,10 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
+# MunchEngine specific
+MunchEngine/src/Graphics/stb_image_write.h
+MunchEngine/src/Graphics/stb_image.h
+
 # User-specific files
 *.rsuser
 *.suo

@@ -252,6 +252,7 @@ void main() {
 
     // color = vec4(TBN[2], 1.0);
     // color = pointLightsColor;
+    // color = texture(material.albedo, vTex) * (pointLightsColor);
     color = texture(material.albedo, vTex) * (ambientColor + directionalColor + pointLightsColor +  spotLightsColor); // + reflectedColor + refractedColor);
     // color.rgb = pow(color.rgb, vec3(1/2.2));
 

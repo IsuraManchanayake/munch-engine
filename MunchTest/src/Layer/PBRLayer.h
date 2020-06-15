@@ -35,6 +35,4 @@ struct PBRLayer : Layer {
     
     // Debug variables
     Shader dirDebugShader;
-    bool aouse;
-    Texture* ao;
 };

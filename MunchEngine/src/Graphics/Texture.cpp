@@ -50,6 +50,42 @@ void Texture::create(const std::string& fileLocation) {
     loadedTextures.emplace(fileLocation, id);
 }
 
+void Texture::createHDR(const std::string& fileLocation) {
+    auto pos = loadedTextures.find(fileLocation);
+    if(pos != loadedTextures.end()) {
+        id = pos->second;
+        copied = true;
+        return;
+    }
+    float* data = stbi_loadf(
+        fileLocation.c_str(), &width, &height, &bitDepth, 0);
+    if (!data) {
+        Logger::error("Failed to load texture data from ", fileLocation);
+        error_exit(1);
+    }
+    
+    glGenTextures(1, &id);
+    glBindTexture(GL_TEXTURE_2D, id);
+
+    GLint internalFormat = GL_RGB16F;
+    if (bitDepth == 4) {
+        internalFormat = GL_RGBA16F;
+    } else if (bitDepth == 1) {
+        internalFormat = GL_RED;
+    }
+    glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, width, height, 0, GL_RGB, GL_FLOAT, data);
+    glGenerateMipmap(GL_TEXTURE_2D);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    glBindTexture(GL_TEXTURE_2D, 0);
+    stbi_image_free(data);
+    loadedTextures.emplace(fileLocation, id);
+}
+
 Texture Texture::createColorTexture(unsigned width, unsigned height, float r, float g, float b) {
     Texture texture;
 
@@ -113,6 +149,12 @@ Texture Texture::createColorTexture(unsigned width, unsigned height, float r) {
 Texture Texture::createImageTexture(const std::string& path) {
     Texture texture;
     texture.create(path);
+    return Texture {texture};
+}
+
+Texture Texture::createImageTextureHDR(const std::string& path) {
+    Texture texture;
+    texture.createHDR(path);
     return Texture {texture};
 }
 

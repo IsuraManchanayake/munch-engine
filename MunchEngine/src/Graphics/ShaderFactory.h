@@ -8,6 +8,8 @@ struct ShaderFactory {
     static Shader* dirShadowShader();
     static Shader* omniDirShadowShader();
     static Shader* pbrShader();
+    static Shader* hdriShader();
+    static Shader* irradianceShader();
 private:
     ShaderFactory();
 };

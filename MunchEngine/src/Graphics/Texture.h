@@ -13,12 +13,14 @@ struct Texture : Resource {
     ADD_SPECIAL_CLASS_FUNCTIONS(Texture);
 
     void create(const std::string& fileLocation);
+    void createHDR(const std::string& fileLocation);
     void use(GLenum textureUnit);
     void clear();
 
     static Texture createColorTexture(unsigned width, unsigned height, float r, float g, float b);
     static Texture createColorTexture(unsigned width, unsigned height, float r);
     static Texture createImageTexture(const std::string& path);
+    static Texture createImageTextureHDR(const std::string& path);
 
     GLuint id;
     int width, height, bitDepth;
