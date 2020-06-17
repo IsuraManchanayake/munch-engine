@@ -11,7 +11,7 @@ struct SpotLight : PointLight {
     
     template<typename Func>
     void useShadow(Func&& renderStep);
-    void use();
+    void use(Shader* shader);
 
     glm::vec3 direction;
     GLfloat angle;

@@ -1,3 +1,7 @@
+
+#define STB_IMAGE_IMPLEMENTATION
+#define STB_IMAGE_WRITE_IMPLEMENTATION
+
 #include "Config/Config.h"
 
 #include "App/App.h"

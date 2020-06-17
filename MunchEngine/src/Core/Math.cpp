@@ -81,7 +81,8 @@ float perlin2D(float x, float y) {
     float dx1 = lerpf(d01, d11, fade(dx));
     float df  = lerpf(dx0, dx1, fade(dy));
 
-    return mapf(df, -1.f, 1.f, 0.f, 1.f);
+    float value = mapf(df, -1.f, 1.f, 0.f, 1.f);
+    return value;
 }
 }
 
@@ -90,5 +91,5 @@ float perlin2D(float x, float y) {
 }
 
 float mapf(float x, float a, float b, float p, float q) {
-    return p + (q - p) * ((x - a) / (x - b));
+    return p + (q - p) * ((x - a) / (b - a));
 }

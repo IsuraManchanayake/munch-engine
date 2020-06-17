@@ -7,6 +7,7 @@ DefaultEntity::DefaultEntity()
 void DefaultEntity::render() {
     // transform
     shader->setm4("model", transform);
+    shader->setf2("uvScale", uvScale);
     
     for(size_t i = 0; i < model->meshes.size(); i++) {
 #pragma message("TODO: set texture units")

@@ -165,6 +165,7 @@ float getOmniShadowFactorS(SpotLight light) {
 
 
 vec4 diffuse(vec3 color, vec3 direction, float intensity, float shadowFactor) {
+    vec3 lightDir = normalize(direction);
     vec3 viewDir = normalize(eye - fPos);
     vec3 half = normalize(viewDir + direction);
 
@@ -174,7 +175,7 @@ vec4 diffuse(vec3 color, vec3 direction, float intensity, float shadowFactor) {
     
     float k_geometry = (fRough + 1) * (fRough + 1) / 8;
     float ndotv = max(0, dot(fNrm, viewDir));
-    float ndotl = max(0, dot(fNrm, direction));
+    float ndotl = max(0, dot(fNrm, lightDir));
     float g_obs = ndotv / (ndotv * (1 - k_geometry) + k_geometry);
     float g_shd = ndotl / (ndotl * (1 - k_geometry) + k_geometry);
     float g_schlickggx = g_obs * g_shd;
@@ -183,7 +184,8 @@ vec4 diffuse(vec3 color, vec3 direction, float intensity, float shadowFactor) {
     f0 = mix(f0, fAlbedo, fMetal);
     vec3 f_schlick = f0 + (1 - f0) * pow(1 - max(0, dot(half, fNrm)), 5);
 
-    vec3 f_cooktorrance = (ndf_ggxtr * f_schlick * g_schlickggx) / (4 * max(0.001, dot(viewDir, fNrm)) * max(0.001, dot(direction, fNrm)));
+    // vec3 f_cooktorrance = (ndf_ggxtr * f_schlick * g_schlickggx) / (4 * max(0, dot(viewDir, fNrm)) * max(0, dot(lightDir, fNrm)) + 0.01);
+    vec3 f_cooktorrance = (ndf_ggxtr * f_schlick) / (4 * (ndotv * (1 - k_geometry) + k_geometry) * (ndotl * (1 - k_geometry) + k_geometry));
     
     vec3 k_s = f_schlick;
     vec3 k_d = 1 - k_s; // ??
@@ -191,10 +193,12 @@ vec4 diffuse(vec3 color, vec3 direction, float intensity, float shadowFactor) {
     vec3 f_lambert = fAlbedo / pi;
 
     vec3 f_r = k_d * f_lambert + f_cooktorrance;
-    float factor = max(0, dot(fNrm, direction));
+    float factor = max(0.01, dot(fNrm, lightDir));
     float attenuation = 1.0f; // calculate 
     vec3 radiance = color * attenuation * intensity;
-    vec3 L0 = f_cooktorrance * radiance * factor;
+    vec3 L0 = f_r * radiance * factor;
+
+    // L0 = vec3(f_schlick);
     return vec4(L0 * (1 - shadowFactor), 1.0);
     // return vec4(fAlbedo, 1.0);
 }
@@ -269,13 +273,16 @@ void main() {
     vec4 pointLightsColor = getPointLightsColor();
     vec4 spotLightsColor = getSpotLightsColor();
 
+    // if(directionalColor.r > 1) {
+    //     color = vec4(1.0, 0.0, 0.0, 0.0);
+    // } else {
     // color = vec4(fMetal);
     // color = ambientColor;
     color = directionalColor + pointLightsColor + ambientColor;
     // color = vec4(fAlbedo, 1.0);
     // color = directionalColor + pointLightsColor + ambientColor; // + ambientColor; // + pointLightsColor + spotLightsColor;// + ambientColor;
-    color.rgb = color.rgb / (color.rgb + vec3(1.0));
-    // color.rgb = log2(color.rgb + vec3(1.0));
+    // color.rgb = color.rgb / (color.rgb + vec3(1.0));
+    color.rgb = log2(color.rgb + vec3(1.0));
     color.rgb = pow(color.rgb, vec3(1.0/2.2));
     color.a = 1.0;
     // color = vec4(vec3(fAO), 1);
@@ -292,4 +299,6 @@ void main() {
     
     // Contrast
     // color.rgb = (color.rgb - 0.5f) * max(2.0f, 0.0f) + 0.5f;
+    // }
+
 }

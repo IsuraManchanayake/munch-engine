@@ -14,21 +14,19 @@ struct PointLight {
     ~PointLight();
 
     void setPoint(unsigned index, const glm::vec3& color, const glm::vec3& position, const glm::vec3& constants, GLfloat intensity);
-    void setMainShader(Shader* shader);
     void setShadowShader(Shader* shader);
     void setShadowMap(GLuint width, GLuint height, GLfloat near, GLfloat far);
     void updateLightProjectionView();
 
     template<typename Func>
     void useShadow(Func&& renderStep);
-    void use();
+    void use(Shader* shader);
     
     glm::vec3 color;
     glm::vec3 position;
     glm::vec3 constants;
     GLfloat intensity;
     unsigned index;
-    Shader* mainShader;
     Shader* shadowShader;
 
     OmniDirectionalShadowMap shadowMap;

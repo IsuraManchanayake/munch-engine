@@ -20,13 +20,14 @@ uniform mat4 model;
 uniform mat4 projection;
 uniform mat4 view;
 uniform mat4 directionalLightTransform;
+uniform vec2 uvScale;
 
 void main() {
     vPos = view * model * vec4(pos, 1.0);
     directionalLightSpacePos = directionalLightTransform * model * vec4(pos, 1.f);
 
     vCol = vec4(clamp(pos, 0.f, 1.f), 1.f);
-    vTex = tex;
+    vTex = tex * uvScale;
     fNrm = normalize(mat3(transpose(inverse(model))) * nrm);
     fPos = (model * vec4(pos, 1.f)).xyz;
 

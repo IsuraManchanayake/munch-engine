@@ -8,6 +8,7 @@
 struct Entity {
     Model* model;
     glm::mat4 transform;
+    glm::vec2 uvScale;
     bool loadedFromDisk;
 
     Entity();

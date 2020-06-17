@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Graphics/stb_image.h"
 #include "Graphics/Mesh.h"
 #include "Graphics/Shader.h"
 #include "Graphics/Resource.h"

@@ -3,6 +3,7 @@
 #include "Graphics/Mesh.h"
 #include "Graphics/Shader.h";
 #include "Graphics/Texture.h"
+#include "Graphics/FrameBuffer.h"
 
 struct HDRI {
     HDRI();
@@ -13,6 +14,7 @@ struct HDRI {
     void setIrradianceMap();
     void render(const glm::mat4& view, const glm::mat4& projection);
     void read(GLenum textureUnit);
+    void useIrradianceMap(Shader* shader, const std::string& name);
 
     Mesh mesh;
     Shader* shader;
@@ -22,7 +24,6 @@ struct HDRI {
     struct {
         Mesh mesh;
         Shader* shader;
-        unsigned textureId;
-        unsigned fbo;
+        FrameBuffer framebuffer;
     } irradiance;
 };

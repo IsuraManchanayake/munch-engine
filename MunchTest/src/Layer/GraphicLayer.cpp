@@ -51,7 +51,6 @@ void GraphicLayer::setup() {
     const GLfloat dirShadowMapNear = 0.1f, dirShadowMapFar = 40.0f;
     directionalLight.setLight(Color::white, 0.5f, {1.f, -1.f, 1.f}, 0.4f);
     directionalLight.setShadowMap(dirShadowMapWidth, dirShadowMapHeight, dirShadowMapNear, dirShadowMapFar);
-    directionalLight.setMainShader(defaultShader);
     directionalLight.setShadowShader(dirShadowShader);
 
     // Point lights and spot lights
@@ -63,7 +62,6 @@ void GraphicLayer::setup() {
     pointLights[1].setPoint(1, Color::cyan, { -5.0f,  4.0f, -5.0f }, 0.4f * glm::vec3{ 1.0f, 1.0f, 1.0f }, 1.0f);
     for(auto& pointLight : pointLights) {
         pointLight.setShadowMap(omniShadowMapWidth, omniShadowMapHeight, omniShadowMapNear, omniShadowMapFar);
-        pointLight.setMainShader(defaultShader);
         pointLight.setShadowShader(omniDirShadowShader);
     }
     spotLights.resize(2);
@@ -71,7 +69,6 @@ void GraphicLayer::setup() {
     spotLights[1].setSpot(1, Color::green, { -2.f,  2.f,  0.f }, { 0.f, -1.f, 0.f }, 0.4f * glm::vec3{ 1.0f, 1.0f, 1.0f }, 45.f, 1.0f);
     for(auto& spotLight : spotLights) {
         spotLight.setShadowMap(omniShadowMapWidth, omniShadowMapHeight, omniShadowMapNear, omniShadowMapFar);
-        spotLight.setMainShader(defaultShader);
         spotLight.setShadowShader(omniDirShadowShader);
     }
 
@@ -151,12 +148,12 @@ void GraphicLayer::update() {
     
     hdri.render(view, projection);
     defaultShader->use();
-    directionalLight.use();
+    directionalLight.use(defaultShader);
     for(auto& pointLight: pointLights) {
-        pointLight.use();
+        pointLight.use(defaultShader);
     }
     for(auto& spotLight: spotLights) {
-        spotLight.use();
+        spotLight.use(defaultShader);
     }
     defaultShader->setm4("projection", projection);
     defaultShader->setm4("view", view);

@@ -7,6 +7,8 @@
 MunchEngine/src/Graphics/stb_image_write.h
 MunchEngine/src/Graphics/stb_image.h
 
+MunchTest/Screenshots/**
+
 # User-specific files
 *.rsuser
 *.suo

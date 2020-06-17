@@ -1,6 +1,9 @@
 #include "Common.h"
 
 #include <fstream>
+#include <chrono>
+#include <ctime>
+#include <iomanip>
 
 void error_exit(int code) {
     exit(code);
@@ -34,4 +37,9 @@ void split(std::vector<std::string>& results, const std::string& input,
         }
     }
     results.emplace_back(&input[previous], &input[input.size()]);
+}
+
+std::string currentTime() {
+    std::time_t const now_c = std::time(nullptr);
+    return cat(std::put_time(std::localtime(&now_c), "%F %T"));
 }

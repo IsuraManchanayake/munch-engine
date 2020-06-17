@@ -15,14 +15,14 @@ void SpotLight::setSpot(unsigned index, const glm::vec3& color, const glm::vec3&
     this->angle = angleRadians;
 }
 
-void SpotLight::use() {
-    mainShader->use();
-    mainShader->setf3(cat("spotLights[", index, "].color"), color);
-    mainShader->setf3(cat("spotLights[", index, "].position"), position);
-    mainShader->setf3(cat("spotLights[", index, "].constants"), constants);
-    mainShader->setf1(cat("spotLights[", index, "].intensity"), intensity);
-    mainShader->settx3d(cat("spotLights[", index, "].shadowMap"), shadowMap.textureId);
-    mainShader->setf1(cat("spotLights[", index, "].shadowFar"), shadowMap.far);
-    mainShader->setf3(cat("spotLights[", index, "].direction"), direction);
-    mainShader->setf1(cat("spotLights[", index, "].angle"), angle);
+void SpotLight::use(Shader* shader) {
+    shader->use();
+    shader->setf3(cat("spotLights[", index, "].color"), color);
+    shader->setf3(cat("spotLights[", index, "].position"), position);
+    shader->setf3(cat("spotLights[", index, "].constants"), constants);
+    shader->setf1(cat("spotLights[", index, "].intensity"), intensity);
+    shader->settx3d(cat("spotLights[", index, "].shadowMap"), shadowMap.textureId);
+    shader->setf1(cat("spotLights[", index, "].shadowFar"), shadowMap.far);
+    shader->setf3(cat("spotLights[", index, "].direction"), direction);
+    shader->setf1(cat("spotLights[", index, "].angle"), angle);
 }

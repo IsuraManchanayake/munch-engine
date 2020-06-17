@@ -76,8 +76,6 @@ struct Logger {
     template<typename ...Args>
     static void error(Args&&... args);
 
-    static std::string currentTime();
-
     static WORD consoleAttribs;
     static LogQueue logQueue;
     static bool enabled;

@@ -51,6 +51,16 @@ void Shader::setf1(const std::string& uniformName, GLfloat val) {
     setf1(uniform, val);
 }
 
+void Shader::setf2(const std::string& uniformName, GLfloat val1, GLfloat val2) {
+    GLint uniform = getUniformLocation(uniformName);
+    setf2(uniform, val1, val2);
+}
+
+void Shader::setf2(const std::string& uniformName, const glm::vec2& val) {
+    GLint uniform = getUniformLocation(uniformName);
+    setf2(uniform, val.x, val.y);
+}
+
 void Shader::setf3(const std::string& uniformName, GLfloat val1, GLfloat val2, GLfloat val3) {
     GLint uniform = getUniformLocation(uniformName);
     setf3(uniform, val1, val2, val3);
@@ -98,6 +108,10 @@ void Shader::seti1(GLint uniform, GLint val) {
 
 void Shader::setf1(GLint uniform, GLfloat val) {
     glUniform1f(uniform, val);
+}
+
+void Shader::setf2(GLint uniform, GLfloat val1, GLfloat val2) {
+    glUniform2f(uniform, val1, val2);
 }
 
 void Shader::setf3(GLint uniform, GLfloat val1, GLfloat val2, GLfloat val3) {

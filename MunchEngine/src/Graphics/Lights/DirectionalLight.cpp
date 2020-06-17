@@ -3,7 +3,7 @@
 DirectionalLight::DirectionalLight() 
     : color(1.f, 1.f, 1.f), ambientIntensity(1.f), 
       diffuseDirection(0.f, 0.f, 1.f), diffuseIntensity(1.f),
-      shadowMap(), lightProjectionView(1.f), mainShader(nullptr), shadowShader(nullptr) {
+      shadowMap(), lightProjectionView(1.f), shadowShader(nullptr) {
 }
 
 DirectionalLight::~DirectionalLight() {
@@ -27,20 +27,16 @@ void DirectionalLight::setLight(const glm::vec3& color, GLfloat ambientIntensity
     this->diffuseIntensity = diffuseIntensity;
 }
 
-void DirectionalLight::setMainShader(Shader* shader) {
-    this->mainShader = shader;
-}
-
 void DirectionalLight::setShadowShader(Shader* shader) {
     this->shadowShader = shader;
 }
 
-void DirectionalLight::use() {
-    mainShader->use();
-    mainShader->setf3("directionalLight.color", color);
-    mainShader->setf1("directionalLight.ambientIntensity", ambientIntensity);
-    mainShader->setf3("directionalLight.diffuseDirection", diffuseDirection);
-    mainShader->setf1("directionalLight.diffuseIntensity", diffuseIntensity);
-    mainShader->setm4("directionalLightTransform", lightProjectionView);
-    mainShader->settx2d("directionalLight.shadowMap", shadowMap.textureId);
+void DirectionalLight::use(Shader* shader) {
+    shader->use();
+    shader->setf3("directionalLight.color", color);
+    shader->setf1("directionalLight.ambientIntensity", ambientIntensity);
+    shader->setf3("directionalLight.diffuseDirection", diffuseDirection);
+    shader->setf1("directionalLight.diffuseIntensity", diffuseIntensity);
+    shader->setm4("directionalLightTransform", lightProjectionView);
+    shader->settx2d("directionalLight.shadowMap", shadowMap.textureId);
 }

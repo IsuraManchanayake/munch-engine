@@ -30,6 +30,9 @@ template <typename T> T lexical_cast(const std::string& input);
 template <typename T, typename ConstIter> T lexical_cast(ConstIter first, ConstIter last);
 template<typename ToType> void split_cast(std::vector<ToType>& results, const std::string& input, char character);
 
+// Time
+std::string currentTime();
+
 // ================ Template definitions ================
 template<typename ...Args>
 inline std::string cat(Args&&... args) {

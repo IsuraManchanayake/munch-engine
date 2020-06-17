@@ -39,6 +39,10 @@
     <ClCompile Include="src\Graphics\Entities\Default\DefaultEntity.cpp" />
     <ClCompile Include="src\Graphics\ShaderFactory.cpp" />
     <ClCompile Include="src\Core\V3.cpp" />
+    <ClCompile Include="src\Graphics\FrameBuffer.cpp" />
+    <ClCompile Include="src\Graphics\Entities\Terrain\TerrainEntity.cpp" />
+    <ClCompile Include="src\Graphics\Image.cpp" />
+    <ClCompile Include="src\Graphics\Screenshot.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\App\App.h" />
@@ -85,5 +89,10 @@
     <ClInclude Include="src\Graphics\Entities\Default\DefaultEntity.h" />
     <ClInclude Include="src\Graphics\ShaderFactory.h" />
     <ClInclude Include="src\Core\V3.h" />
+    <ClInclude Include="src\Graphics\FrameBuffer.h" />
+    <ClInclude Include="src\Graphics\stb_image_write.h" />
+    <ClInclude Include="src\Graphics\Entities\Terrain\TerrainEntity.h" />
+    <ClInclude Include="src\Graphics\Screenshot.h" />
+    <ClInclude Include="src\Graphics\Image.h" />
   </ItemGroup>
 </Project>

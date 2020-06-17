@@ -1,7 +1,7 @@
 #include "Graphics/Entity.h"
 
 Entity::Entity() 
-    : model(nullptr), transform(1.f), loadedFromDisk(false) {
+    : model(nullptr), transform(1.f), loadedFromDisk(false), uvScale(1.f, 1.f) {
 }
 
 Entity::~Entity() {

@@ -5,6 +5,7 @@
 #include <string>
 
 #include "Graphics/Resource.h"
+#include "Graphics/Image.h"
 
 struct Mesh : Resource {
     Mesh();
@@ -18,6 +19,7 @@ struct Mesh : Resource {
     void createCube();
     void createPlane();
     void createTerrain();
+    void createTerrain(const Image& heightMap);
     void createSphere();
 
     void render() const;

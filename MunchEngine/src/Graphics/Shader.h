@@ -22,6 +22,8 @@ struct Shader : Resource {
     GLint getUniformLocation(const std::string& uniformName);
     void seti1(const std::string& uniformName, GLint val);
     void setf1(const std::string& uniformName, GLfloat val);
+    void setf2(const std::string& uniformName, GLfloat val1, GLfloat val2);
+    void setf2(const std::string& uniformName, const glm::vec2& val);
     void setf3(const std::string& uniformName, GLfloat val1, GLfloat val2, GLfloat val3);
     void setf3(const std::string& uniformName, const glm::vec3& val);
     void setm4(const std::string& uniformName, const glm::mat4& val);
@@ -30,6 +32,7 @@ struct Shader : Resource {
     void settx3d(const std::string& uniformName, GLuint textureId);
     static void seti1(GLint uniform, GLint val);
     static void setf1(GLint uniform, GLfloat val);
+    static void setf2(GLint uniform, GLfloat val1, GLfloat val2);
     static void setf3(GLint uniform, GLfloat val1, GLfloat val2, GLfloat val3);
     static void setf3(GLint uniform, const glm::vec3& val);
     static void setm4(GLint uniform, const glm::mat4& val);

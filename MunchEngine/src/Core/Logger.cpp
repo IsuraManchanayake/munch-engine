@@ -1,8 +1,5 @@
-#include "Logger.h"
+#include "Core/Logger.h"
 
-#include <chrono>
-#include <ctime>
-#include <iomanip>
 
 LogQueue::LogQueue()
     : queue(), queueMutex() {
@@ -44,9 +41,4 @@ void Logger::init() {
 void Logger::stop() {
     enabled = false;
     loggerThread.join();
-}
-
-std::string Logger::currentTime() {
-    std::time_t const now_c = std::time(nullptr);
-    return cat(std::put_time(std::localtime(&now_c), "%F %T"));
 }

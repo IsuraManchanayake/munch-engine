@@ -1,5 +1,7 @@
 #include "Graphics/SkyBox.h"
 #include "Core/Common.h"
+// #define STB_IMAGE_IMPLEMENTATION
+#include "Graphics/stb_image.h"
 
 SkyBox::SkyBox() : Resource(), mesh(), shader(), textureId(), averageColor() { 
 }

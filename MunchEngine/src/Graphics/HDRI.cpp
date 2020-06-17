@@ -1,4 +1,5 @@
 #include "Graphics/HDRI.h"
+// #define STB_IMAGE_IMPLEMENTATION
 #include "Graphics/stb_image.h"
 #include "Graphics/ShaderFactory.h"
 #include "Core/Common.h"
@@ -83,25 +84,9 @@ void HDRI::setIrradianceMap() {
     irradiance.mesh.createPlane();
     irradiance.shader = ShaderFactory::irradianceShader();
     
-    glGenFramebuffers(1, &irradiance.fbo);
-    glBindFramebuffer(GL_FRAMEBUFFER, irradiance.fbo);
-    glGenTextures(1, &irradiance.textureId);
-    glBindTexture(GL_TEXTURE_2D, irradiance.textureId);
+    irradiance.framebuffer.create(mapWidth, mapHeight);
 
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, mapWidth, mapHeight, 0, GL_RGB, GL_FLOAT, 0);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT); 
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-    glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, irradiance.textureId, 0);
-    GLenum drawBuffers[1] = {GL_COLOR_ATTACHMENT0};
-    glDrawBuffers(1, drawBuffers);
-
-    if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
-        Logger::error("Framebuffer is not complete!");
-    }
-
+    irradiance.framebuffer.write();
     glViewport(0, 0, mapWidth, mapHeight);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     irradiance.shader->use();
@@ -124,7 +109,6 @@ void HDRI::render(const glm::mat4& view, const glm::mat4& projection) {
     shader->setm4("view", translationRemovedView);
     shader->setm4("projection", projection);
     shader->settx("hdri", texture);
-    // shader->settx2d("hdri", irradiance.textureId);
     mesh.render();
 
     glDepthMask(GL_TRUE);
@@ -132,5 +116,8 @@ void HDRI::render(const glm::mat4& view, const glm::mat4& projection) {
 
 void HDRI::read(GLenum textureUnit) {
     texture.use(textureUnit);
-    // irradiance.texture.use(textureUnit);
+}
+
+void HDRI::useIrradianceMap(Shader* shader_, const std::string& name) {
+    shader_->settx2d(name, irradiance.framebuffer.textureId);
 }

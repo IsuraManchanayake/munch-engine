@@ -83,6 +83,42 @@ Shader* ShaderFactory::pbrShader() {
     return shader;
 }
 
+Shader* ShaderFactory::terrainShader() {
+    static const unsigned maxPointLights = 3;
+    static const unsigned maxSpotLights = 3;
+    Shader* shader = new Shader;
+    shader->create("Shaders/terrain.vert.glsl", "Shaders/terrain.frag.glsl");
+    std::vector<std::string> uniformTextureNames = {
+        "directionalLight.shadowMap",
+        "material.albedo",
+        "material.normal",
+        "material.displacement",
+        "material.specular",
+        "material.gloss",
+        "material.roughness",
+        "material.metallic",
+        "material.ao",
+        "irradianceMap",
+        // "heightMap",
+    };
+    for(unsigned i = 0; i < maxPointLights; i++) {
+        uniformTextureNames.push_back(cat("pointLights[", i, "].shadowMap"));
+    }
+    for(unsigned i = 0; i < maxSpotLights; i++) {
+        uniformTextureNames.push_back(cat("spotLights[", i, "].shadowMap"));
+    }
+    for(size_t i = 0; i < uniformTextureNames.size(); i++) {
+        shader->tunits[uniformTextureNames[i]] = i;
+    }
+
+    // Bind texture units
+    shader->use();
+    for(auto& [uniformName, tunit] : shader->tunits) {
+        shader->seti1(uniformName, tunit);
+    }
+    return shader;
+}
+
 Shader* ShaderFactory::hdriShader() {
     Shader* shader = new Shader;
     shader->create("Shaders/hdri.vert.glsl", "Shaders/hdri.frag.glsl");

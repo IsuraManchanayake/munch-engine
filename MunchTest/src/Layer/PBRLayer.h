@@ -2,6 +2,7 @@
 
 #include "Layer/Layer.h"
 #include "Graphics/Entity.h"
+#include "Graphics/Entities/Terrain/TerrainEntity.h"
 #include "Graphics/Camera.h"
 #include "Graphics/Lights/DirectionalLight.h"
 #include "Graphics/Lights/PointLight.h"
@@ -24,8 +25,10 @@ struct PBRLayer : Layer {
 
     KeyContainer keys;
     std::vector<Entity*> entities;
+    std::vector<TerrainEntity*> terrains;
     std::vector<Shader*> shaders;
     Shader* defaultShader;
+    Shader* terrainShader;
     DirectionalLight directionalLight;
     std::vector<PointLight> pointLights;
     std::vector<SpotLight> spotLights;
