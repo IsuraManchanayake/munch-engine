@@ -23,7 +23,9 @@ void Guide::create(const glm::vec3& position) {
 
     cube.createCube();
 
-    shader.create("Shaders/guide.vert.glsl", "Shaders/guide.frag.glsl");
+    shader.create()->addShaderFromPath(ShaderType::Vertex, "Shaders/guide.vert.glsl")
+                   ->addShaderFromPath(ShaderType::Fragment, "Shaders/guide.frag.glsl")
+                   ->compile();
     uniformModelLocation = shader.getUniformLocation("modelM");
     uniformViewLocation = shader.getUniformLocation("viewM");
     uniformProjectionLocation = shader.getUniformLocation("projectionM");

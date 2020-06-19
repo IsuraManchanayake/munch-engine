@@ -6,7 +6,10 @@ UILayer::UILayer(std::string name, int width, int height)
 }
 
 void UILayer::setup() {
-    shader.create("Shaders/editor.vert.glsl", "Shaders/editor.frag.glsl");
+    shader.create()
+        ->addShaderFromPath(ShaderType::Vertex, "Shaders/editor.vert.glsl")
+        ->addShaderFromPath(ShaderType::Fragment, "Shaders/editor.frag.glsl")
+        ->compile();
     shader.use();
     shader.seti1("theTexture", 0);
     PaneUI* pane1 = root.addUIElement<PaneUI>(100, 100, 200, 200);

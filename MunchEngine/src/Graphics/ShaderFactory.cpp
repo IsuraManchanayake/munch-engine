@@ -6,7 +6,10 @@ Shader* ShaderFactory::defaultShader() {
     static const unsigned maxSpotLights = 3;
     
     Shader* shader = new Shader;
-    shader->create("Shaders/default.vert.glsl", "Shaders/default.frag.glsl");
+    shader->create()
+          ->addShaderFromPath(ShaderType::Vertex, "Shaders/default.vert.glsl")
+          ->addShaderFromPath(ShaderType::Fragment, "Shaders/default.frag.glsl")
+          ->compile();
     
     std::vector<std::string> uniformTextureNames = {
         "directionalLight.shadowMap",
@@ -38,13 +41,20 @@ Shader* ShaderFactory::defaultShader() {
 
 Shader* ShaderFactory::dirShadowShader() {
     Shader* shader = new Shader;
-    shader->create("Shaders/directional_shadow_map.vert.glsl", "Shaders/directional_shadow_map.frag.glsl");
+    shader->create()
+          ->addShaderFromPath(ShaderType::Vertex, "Shaders/directional_shadow_map.vert.glsl")
+          ->addShaderFromPath(ShaderType::Fragment, "Shaders/directional_shadow_map.frag.glsl")
+          ->compile();
     return shader;
 }
 
 Shader* ShaderFactory::omniDirShadowShader() {
     Shader* shader = new Shader;
-    shader->create("Shaders/omni_shadow_map.vert.glsl", "Shaders/omni_shadow_map.geom.glsl", "Shaders/omni_shadow_map.frag.glsl");
+    shader->create()
+          ->addShaderFromPath(ShaderType::Vertex, "Shaders/omni_shadow_map.vert.glsl")
+          ->addShaderFromPath(ShaderType::Geometry, "Shaders/omni_shadow_map.geom.glsl")
+          ->addShaderFromPath(ShaderType::Fragment, "Shaders/omni_shadow_map.frag.glsl")
+          ->compile();
     return shader;
 }
 
@@ -52,7 +62,10 @@ Shader* ShaderFactory::pbrShader() {
     static const unsigned maxPointLights = 3;
     static const unsigned maxSpotLights = 3;
     Shader* shader = new Shader;
-    shader->create("Shaders/pbr.vert.glsl", "Shaders/pbr.frag.glsl");
+    shader->create()
+          ->addShaderFromPath(ShaderType::Vertex, "Shaders/pbr.vert.glsl")
+          ->addShaderFromPath(ShaderType::Fragment, "Shaders/pbr.frag.glsl")
+          ->compile();
     std::vector<std::string> uniformTextureNames = {
         "directionalLight.shadowMap",
         "material.albedo",
@@ -87,7 +100,10 @@ Shader* ShaderFactory::terrainShader() {
     static const unsigned maxPointLights = 3;
     static const unsigned maxSpotLights = 3;
     Shader* shader = new Shader;
-    shader->create("Shaders/terrain.vert.glsl", "Shaders/terrain.frag.glsl");
+    shader->create()
+          ->addShaderFromPath(ShaderType::Vertex, "Shaders/terrain.vert.glsl")
+          ->addShaderFromPath(ShaderType::Fragment, "Shaders/terrain.frag.glsl")
+          ->compile();
     std::vector<std::string> uniformTextureNames = {
         "directionalLight.shadowMap",
         "material.albedo",
@@ -121,7 +137,10 @@ Shader* ShaderFactory::terrainShader() {
 
 Shader* ShaderFactory::hdriShader() {
     Shader* shader = new Shader;
-    shader->create("Shaders/hdri.vert.glsl", "Shaders/hdri.frag.glsl");
+    shader->create()
+          ->addShaderFromPath(ShaderType::Vertex, "Shaders/hdri.vert.glsl")
+          ->addShaderFromPath(ShaderType::Fragment, "Shaders/hdri.frag.glsl")
+          ->compile();
     std::vector<std::string> uniformTextureNames = {
         "hdri",
     };
@@ -137,7 +156,10 @@ Shader* ShaderFactory::hdriShader() {
 
 Shader* ShaderFactory::irradianceShader() {
     Shader* shader = new Shader;
-    shader->create("Shaders/irradiance.vert.glsl", "Shaders/irradiance.frag.glsl");
+    shader->create()
+          ->addShaderFromPath(ShaderType::Vertex, "Shaders/irradiance.vert.glsl")
+          ->addShaderFromPath(ShaderType::Fragment, "Shaders/irradiance.frag.glsl")
+          ->compile();
     std::vector<std::string> uniformTextureNames = {
         "hdri",
     };

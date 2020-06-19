@@ -8,16 +8,29 @@
 #include <string>
 #include <unordered_map>
 
+enum class ShaderType {
+    Vertex = GL_VERTEX_SHADER,
+    TessCtrl = GL_TESS_CONTROL_SHADER,
+    TessEval = GL_TESS_EVALUATION_SHADER,
+    Geometry = GL_GEOMETRY_SHADER,
+    Fragment = GL_FRAGMENT_SHADER
+};
+
 struct Shader : Resource {
     Shader();
     ~Shader();
 
     ADD_SPECIAL_CLASS_FUNCTIONS(Shader);
 
-    void createSrc(const char* vertSrc, const char* fragSrc);
-    void createSrc(const char* vertSrc, const char* geomSrc, const char* fragSrc);
-    void create(const char* vertPath, const char* fragPath);
-    void create(const char* vertPath, const char* geomPath, const char* fragPath);
+    // void createSrc(const char* vertSrc, const char* fragSrc);
+    // void createSrc(const char* vertSrc, const char* geomSrc, const char* fragSrc);
+    // void create(const char* vertPath, const char* fragPath);
+    // void create(const char* vertPath, const char* geomPath, const char* fragPath);
+
+    Shader* create();
+    Shader* addShaderFromPath(ShaderType shaderType, const std::string& path);
+    Shader* addShaderFromSource(ShaderType shaderType, const std::string& source);
+    void compile();
 
     GLint getUniformLocation(const std::string& uniformName);
     void seti1(const std::string& uniformName, GLint val);
@@ -40,10 +53,10 @@ struct Shader : Resource {
     void use();
     void clear();
 
-    void compile(const char* vertSrc, const char* fragSrc);
-    void compile(const char* vertSrc, const char* geomSrc, const char* fragSrc);
+    // void compile(const char* vertSrc, const char* fragSrc);
+    // void compile(const char* vertSrc, const char* geomSrc, const char* fragSrc);
     void validate();
-    void add(const char* src, GLuint shaderType);
+    // void add(const char* src, GLuint shaderType);
     
     GLuint id;
     std::unordered_map<std::string, GLint> uniforms;

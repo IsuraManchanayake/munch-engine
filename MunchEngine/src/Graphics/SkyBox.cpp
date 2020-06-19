@@ -19,7 +19,10 @@ void SkyBox::clear() {
 }
 
 void SkyBox::create(const std::array<std::string, 6>& facePaths) {
-    shader.create("Shaders/skybox.vert.glsl", "Shaders/skybox.frag.glsl");
+    shader.create()
+          ->addShaderFromPath(ShaderType::Vertex, "Shaders/skybox.vert.glsl")
+          ->addShaderFromPath(ShaderType::Fragment, "Shaders/skybox.frag.glsl")
+          ->compile();
 
     glGenTextures(1, &textureId);
     glBindTexture(GL_TEXTURE_CUBE_MAP, textureId);
