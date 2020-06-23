@@ -11,27 +11,6 @@ Shader::~Shader() {
     clear();
 }
 
-// void Shader::createSrc(const char* vertSrc, const char* fragSrc) {
-//     compile(vertSrc, fragSrc);
-// }
-    
-// void Shader::createSrc(const char* vertSrc, const char* geomSrc, const char* fragSrc) {
-//     compile(vertSrc, geomSrc, fragSrc);
-// }
-
-// void Shader::create(const char* vertPath, const char* fragPath) {
-//     std::string vertSrcStr = readFile(vertPath);
-//     std::string fragSrcStr = readFile(fragPath);
-//     createSrc(vertSrcStr.c_str(), fragSrcStr.c_str());
-// }
-
-// void Shader::create(const char* vertPath, const char* geomPath, const char* fragPath) {
-//     std::string vertSrcStr = readFile(vertPath);
-//     std::string geomSrcStr = readFile(geomPath);
-//     std::string fragSrcStr = readFile(fragPath);
-//     createSrc(vertSrcStr.c_str(), geomSrcStr.c_str(), fragSrcStr.c_str());
-// }
-
 Shader* Shader::create() {
     id = glCreateProgram();
     if (!id) {
@@ -184,54 +163,6 @@ void Shader::clear() {
     id = 0;
 }
 
-// void Shader::compile(const char* vertSrc, const char* fragSrc) {
-//     id = glCreateProgram();
-//     if (!id) {
-//         Logger::error("Error creating shader program");
-//         error_exit(1);
-//     }
-
-//     add(vertSrc, GL_VERTEX_SHADER);
-//     add(fragSrc, GL_FRAGMENT_SHADER);
-
-//     GLint result = 0;
-//     GLchar eLog[1024] = { 0 };
-//     glLinkProgram(id);
-//     glGetProgramiv(id, GL_LINK_STATUS, &result);
-//     if (!result) {
-//         glGetProgramInfoLog(id, sizeof(eLog), 0, eLog);
-//         Logger::error("Error linking program :: ", eLog);
-//         error_exit(1);
-//     }
-
-//     validate();
-// }
-
-
-// void Shader::compile(const char* vertSrc, const char* geomSrc, const char* fragSrc) {
-//     id = glCreateProgram();
-//     if (!id) {
-//         Logger::error("Error creating shader program");
-//         error_exit(1);
-//     }
-
-//     add(vertSrc, GL_VERTEX_SHADER);
-//     add(geomSrc, GL_GEOMETRY_SHADER);
-//     add(fragSrc, GL_FRAGMENT_SHADER);
-
-//     GLint result = 0;
-//     GLchar eLog[1024] = { 0 };
-//     glLinkProgram(id);
-//     glGetProgramiv(id, GL_LINK_STATUS, &result);
-//     if (!result) {
-//         glGetProgramInfoLog(id, sizeof(eLog), 0, eLog);
-//         Logger::error("Error linking program :: ", eLog);
-//         error_exit(1);
-//     }
-
-//     validate();
-// }
-
 void Shader::validate() {
     GLint result = 0;
     GLchar eLog[1024] = { 0 };
@@ -243,19 +174,3 @@ void Shader::validate() {
         error_exit(1);
     }
 }
-
-// void Shader::add(const char* src, GLuint shaderType) {
-//     GLuint shader = glCreateShader(shaderType);
-//     glShaderSource(shader, 1, &src, NULL);
-//     glCompileShader(shader);
-    
-//     GLint result = 0;
-//     GLchar eLog[1024] = { 0 };
-//     glGetShaderiv(shader, GL_COMPILE_STATUS, &result);
-//     if (!result) {
-//         glGetShaderInfoLog(shader, sizeof(eLog), 0, eLog);
-//         Logger::error("Error compiling shader :: ", eLog);
-//         error_exit(1);
-//     }
-//     glAttachShader(id, shader);
-// }

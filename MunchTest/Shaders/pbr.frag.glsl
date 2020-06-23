@@ -1,4 +1,4 @@
-#version 330
+#version 450
 
 // Constants
 const int MAX_POINT_LIGHTS = 3;
@@ -167,11 +167,11 @@ float getOmniShadowFactorS(SpotLight light) {
 vec4 diffuse(vec3 color, vec3 direction, float intensity, float shadowFactor) {
     vec3 lightDir = normalize(direction);
     vec3 viewDir = normalize(eye - fPos);
-    vec3 half = normalize(viewDir + direction);
+    vec3 halfDir = normalize(viewDir + direction);
 
     float alpha = fRough * fRough;
     float alpha2 = alpha * alpha;
-    float ndf_ggxtr = alpha2 / (pi * pow(pow(max(0, dot(half, fNrm)), 2) * (alpha2 - 1) + 1, 2));
+    float ndf_ggxtr = alpha2 / (pi * pow(pow(max(0, dot(halfDir, fNrm)), 2) * (alpha2 - 1) + 1, 2));
     
     float k_geometry = (fRough + 1) * (fRough + 1) / 8;
     float ndotv = max(0, dot(fNrm, viewDir));
@@ -182,7 +182,7 @@ vec4 diffuse(vec3 color, vec3 direction, float intensity, float shadowFactor) {
     
     vec3 f0 = vec3(0.04);
     f0 = mix(f0, fAlbedo, fMetal);
-    vec3 f_schlick = f0 + (1 - f0) * pow(1 - max(0, dot(half, fNrm)), 5);
+    vec3 f_schlick = f0 + (1 - f0) * pow(1 - max(0, dot(halfDir, fNrm)), 5);
 
     // vec3 f_cooktorrance = (ndf_ggxtr * f_schlick * g_schlickggx) / (4 * max(0, dot(viewDir, fNrm)) * max(0, dot(lightDir, fNrm)) + 0.01);
     vec3 f_cooktorrance = (ndf_ggxtr * f_schlick) / (4 * (ndotv * (1 - k_geometry) + k_geometry) * (ndotl * (1 - k_geometry) + k_geometry));

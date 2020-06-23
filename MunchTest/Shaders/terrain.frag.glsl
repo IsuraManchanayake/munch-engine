@@ -1,4 +1,4 @@
-#version 330
+#version 450
 
 // Constants
 const int MAX_POINT_LIGHTS = 3;
@@ -9,7 +9,6 @@ const int MAX_SPOT_LIGHTS = 3;
 struct Material {
     sampler2D albedo;
     sampler2D normal;
-    sampler2D displacement;
     sampler2D specular;
     sampler2D gloss;
     sampler2D roughness;
@@ -49,11 +48,10 @@ struct SpotLight {
 out vec4 color;
 
 // Inputs
-in vec2 vTex;
-// in vec3 fNrm;
-in vec3 fPos;
-in mat3 TBN;
-in vec4 directionalLightSpacePos;
+in vec2 fs_in_vTex;
+in vec3 fs_in_fPos;
+in mat3 fs_in_TBN;
+in vec4 fs_in_directionalLightSpacePos;
 
 // Global variables
 vec3 fAlbedo;
@@ -92,7 +90,7 @@ float map(float x, float a, float b, float p, float q) {
 
 float getDirectionalShadowFactor(DirectionalLight light) {
     float shadow = 0.f;
-    vec3 projCoords = directionalLightSpacePos.xyz / directionalLightSpacePos.w;
+    vec3 projCoords = fs_in_directionalLightSpacePos.xyz / fs_in_directionalLightSpacePos.w;
     projCoords = projCoords * 0.5 + 0.5;
     float current = projCoords.z;
     vec3 normal = normalize(fNrm);
@@ -121,12 +119,12 @@ vec3 gridSamplingDisk[20] = vec3[] (
 );
 
 float getOmniShadowFactorP(PointLight light) {
-    vec3 fragToLight = fPos - light.position;
+    vec3 fragToLight = fs_in_fPos - light.position;
     float currentDepth = length(fragToLight);
     float shadow = 0.0;
     float bias = 0.15;
     int samples = 20;
-    float viewDistance = length(eye - fPos);
+    float viewDistance = length(eye - fs_in_fPos);
     float far_plane = light.shadowFar;
     float diskRadius = (1.0 + (viewDistance / far_plane)) / 25.0;
     for(int i = 0; i < samples; ++i)
@@ -142,12 +140,12 @@ float getOmniShadowFactorP(PointLight light) {
 }
 
 float getOmniShadowFactorS(SpotLight light) {
-    vec3 fragToLight = fPos - light.position;
+    vec3 fragToLight = fs_in_fPos - light.position;
     float currentDepth = length(fragToLight);
     float shadow = 0.0;
     float bias = 0.15;
     int samples = 20;
-    float viewDistance = length(eye - fPos);
+    float viewDistance = length(eye - fs_in_fPos);
     float far_plane = light.shadowFar;
     float diskRadius = (1.0 + (viewDistance / far_plane)) / 25.0;
     for(int i = 0; i < samples; ++i)
@@ -165,12 +163,12 @@ float getOmniShadowFactorS(SpotLight light) {
 
 vec4 diffuse(vec3 color, vec3 direction, float intensity, float shadowFactor) {
     vec3 lightDir = normalize(direction);
-    vec3 viewDir = normalize(eye - fPos);
-    vec3 half = normalize(viewDir + direction);
+    vec3 viewDir = normalize(eye - fs_in_fPos);
+    vec3 halfDir = normalize(viewDir + direction);
 
     float alpha = fRough * fRough;
     float alpha2 = alpha * alpha;
-    float ndf_ggxtr = alpha2 / (pi * pow(pow(max(0, dot(half, fNrm)), 2) * (alpha2 - 1) + 1, 2));
+    float ndf_ggxtr = alpha2 / (pi * pow(pow(max(0, dot(halfDir, fNrm)), 2) * (alpha2 - 1) + 1, 2));
     
     float k_geometry = (fRough + 1) * (fRough + 1) / 8;
     float ndotv = max(0, dot(fNrm, viewDir));
@@ -181,7 +179,7 @@ vec4 diffuse(vec3 color, vec3 direction, float intensity, float shadowFactor) {
     
     vec3 f0 = vec3(0.04);
     f0 = mix(f0, fAlbedo, fMetal);
-    vec3 f_schlick = f0 + (1 - f0) * pow(1 - max(0, dot(half, fNrm)), 5);
+    vec3 f_schlick = f0 + (1 - f0) * pow(1 - max(0, dot(halfDir, fNrm)), 5);
 
     // vec3 f_cooktorrance = (ndf_ggxtr * f_schlick * g_schlickggx) / (4 * max(0, dot(viewDir, fNrm)) * max(0, dot(lightDir, fNrm)) + 0.01);
     vec3 f_cooktorrance = (ndf_ggxtr * f_schlick) / (4 * (ndotv * (1 - k_geometry) + k_geometry) * (ndotl * (1 - k_geometry) + k_geometry));
@@ -203,7 +201,7 @@ vec4 diffuse(vec3 color, vec3 direction, float intensity, float shadowFactor) {
 }
 
 vec4 getAmbientColor() {
-    vec3 viewDir = normalize(eye - fPos);
+    vec3 viewDir = normalize(eye - fs_in_fPos);
     vec3 f0 = vec3(0.04);
     f0 = mix(f0, fAlbedo, fMetal);
     vec3 k_s = f0 + (max(vec3(1.0 - fRough), f0) - f0) * pow(1 - max(0, dot(viewDir, fNrm)), 5);
@@ -224,7 +222,7 @@ vec4 getPointLightsColor() {
     vec4 result = vec4(0.f, 0.f, 0.f, 0.f);
     for(int i = 0; i < pointLightCount; i++) {
         if(pointLights[i].intensity > 1e-5) {
-            vec3 distVec = pointLights[i].position - fPos;
+            vec3 distVec = pointLights[i].position - fs_in_fPos;
             float dist = sqrt(dot(distVec, distVec));
             float intensity = pointLights[i].intensity 
                                 / (pointLights[i].constants.x * dist * dist + pointLights[i].constants.y * dist + pointLights[i].constants.z);
@@ -239,7 +237,7 @@ vec4 getSpotLightsColor() {
     vec4 result = vec4(0.f, 0.f, 0.f, 0.f);
     for(int i = 0; i < spotLightCount; i++) {
         if(spotLights[i].intensity > 1e-5) {
-            vec3 distVec = fPos - spotLights[i].position;
+            vec3 distVec = fs_in_fPos - spotLights[i].position;
             float dist = sqrt(dot(distVec, distVec));
             float angle = acos(dot(distVec / dist, normalize(spotLights[i].direction)));
             if(angle < spotLights[i].angle) {
@@ -255,16 +253,16 @@ vec4 getSpotLightsColor() {
 }
 
 void main() {
-    fNrm = texture(material.normal, vTex).rgb;
+    fNrm = texture(material.normal, fs_in_vTex).rgb;
     fNrm = fNrm * 2.0 - 1.0;   
-    fNrm = normalize(TBN * fNrm);
+    fNrm = normalize(fs_in_TBN * fNrm);
 
-    fAlbedo = pow(texture(material.albedo, vTex).rgb, vec3(2.2));
-    fSpecular = texture(material.specular, vTex).r;
-    fGloss = texture(material.gloss, vTex).r * 255.0f;
-    fRough = max(0.025, texture(material.roughness, vTex).r);
-    fMetal = texture(material.metallic, vTex).r;
-    fAO = texture(material.ao, vTex).r;
+    fAlbedo = pow(texture(material.albedo, fs_in_vTex).rgb, vec3(2.2));
+    fSpecular = texture(material.specular, fs_in_vTex).r;
+    fGloss = texture(material.gloss, fs_in_vTex).r * 255.0f;
+    fRough = max(0.025, texture(material.roughness, fs_in_vTex).r);
+    fMetal = texture(material.metallic, fs_in_vTex).r;
+    fAO = texture(material.ao, fs_in_vTex).r;
     fIrradiance = clamp(texture(irradianceMap, xyz_to_uv(fNrm)).rgb, 0.0, 1.0);
 
     vec4 ambientColor = getAmbientColor();
@@ -277,7 +275,7 @@ void main() {
     // } else {
     // color = vec4(fMetal);
     // color = ambientColor;
-    // color = vec4(texture(heightMap, vTex));
+    // color = vec4(texture(heightMap, fs_in_vTex));
     color = directionalColor + pointLightsColor + ambientColor;
     // color = directionalColor + pointLightsColor + ambientColor; // + ambientColor; // + pointLightsColor + spotLightsColor;// + ambientColor;
     // color.rgb = color.rgb / (color.rgb + vec3(1.0));
@@ -286,7 +284,7 @@ void main() {
     color.a = 1.0;
     // color = vec4(vec3(fAO), 1);
     
-    // color = texture(material.albedo, vTex) * (ambientColor + directionalColor);
+    // color = texture(material.albedo, fs_in_vTex) * (ambientColor + directionalColor);
     // color.rgb = pow(color.rgb, vec3(1/2.2));
 
     // Logify

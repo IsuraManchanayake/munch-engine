@@ -102,13 +102,15 @@ Shader* ShaderFactory::terrainShader() {
     Shader* shader = new Shader;
     shader->create()
           ->addShaderFromPath(ShaderType::Vertex, "Shaders/terrain.vert.glsl")
+          ->addShaderFromPath(ShaderType::TessCtrl, "Shaders/terrain.tesc.glsl")
+          ->addShaderFromPath(ShaderType::TessEval, "Shaders/terrain.tese.glsl")
           ->addShaderFromPath(ShaderType::Fragment, "Shaders/terrain.frag.glsl")
           ->compile();
     std::vector<std::string> uniformTextureNames = {
         "directionalLight.shadowMap",
         "material.albedo",
         "material.normal",
-        "material.displacement",
+        "pmaterial.displacement",
         "material.specular",
         "material.gloss",
         "material.roughness",

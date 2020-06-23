@@ -17,7 +17,7 @@ void TerrainEntity::render() {
         auto& material = model->materials[model->meshToMaterial[i]];
         shader->settx("material.albedo", material.albedo);
         shader->settx("material.normal", material.normal);
-        shader->settx("material.displacement", material.displacement);
+        shader->settx("pmaterial.displacement", material.displacement);
         shader->settx("material.specular", material.specular);
         shader->settx("material.gloss", material.gloss);
         shader->settx("material.roughness", material.roughness);

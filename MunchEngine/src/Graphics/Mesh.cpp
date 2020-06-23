@@ -13,7 +13,7 @@
 
 
 Mesh::Mesh() 
-    : Resource(), vao(), vbo(), vbot(), ibo(), indexCount() {}
+    : Resource(), vao(), vbo(), vbot(), ibo(), indexCount(), primitiveType(GL_TRIANGLES) {}
 
 Mesh::~Mesh() {
     clear();
@@ -177,6 +177,7 @@ void Mesh::createPlane() {
 }
 
 void Mesh::createTerrain() {
+    primitiveType = GL_PATCHES;
     static const unsigned subx = 100;
     static const unsigned suby = 100;
     static const float perlinFreq = 20.f;
@@ -255,8 +256,10 @@ void Mesh::createTerrain() {
 }
 
 void Mesh::createTerrain(const Image& heightMap) {
-    static const unsigned subx = 100;
-    static const unsigned suby = 100;
+    primitiveType = GL_PATCHES;
+
+    static const unsigned subx = 30;
+    static const unsigned suby = 30;
     static const float perlinFreq = 20.f;
     static const float height = 100.f;
 
@@ -395,8 +398,9 @@ void Mesh::createSphere() {
 void Mesh::render() const {
     glBindVertexArray(vao);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
-
-    glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, 0);
+    
+    glPatchParameteri(GL_PATCH_VERTICES, 3);
+    glDrawElements(primitiveType, indexCount, GL_UNSIGNED_INT, 0);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0); // unbind ibo
     glBindVertexArray(0); // unbind vao

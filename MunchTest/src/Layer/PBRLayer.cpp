@@ -23,7 +23,7 @@ PBRLayer::PBRLayer(std::string name, int width, int height)
     directionalLight(), 
     camera({1.f, 1.f, 1.f}, {0.f, 1.f, 0.f}, -90.f, 0.f, 2.f, 1.f), 
     keys(), hdri(),
-    dirDebugShader(){
+    dirDebugShader(), drawWireFrame(false) {
 }
 
 PBRLayer::~PBRLayer() {
@@ -77,6 +77,7 @@ void PBRLayer::setup() {
     }
 
     // Entities
+    // auto* terrain = EntityFactory::terrain("Textures/gray.tga"); {
     auto* terrain = EntityFactory::terrain("Textures/heightMap.png"); {
         glm::mat4 transform(1.f);
         transform = glm::translate(transform, { 0.f, 0.f, 0.f });
@@ -137,7 +138,7 @@ void PBRLayer::setup() {
     hdri.setIrradianceMap();
     // plane->model->materials[0].albedo = hdri.irradiance.texture;
 
-    projection = glm::perspective(glm::radians(60.f), static_cast<float>(width) / height, 0.1f, 500.f);
+    projection = glm::perspective(glm::radians(60.f), static_cast<float>(width) / height, 0.1f, 1000.f);
 
     // dirDebugShader.create("Shaders/debug_quad.vert.glsl", "Shaders/debug_quad.frag.glsl");
     // dirDebugShader.use();
@@ -217,6 +218,7 @@ void PBRLayer::update() {
     terrainShader->setm4("projection", projection);
     terrainShader->setm4("view", view);
     terrainShader->setf3("eye", camera.position);
+    terrainShader->setf3("eyePos", camera.position);
     terrainShader->seti1("pointLightCount", 2);
     terrainShader->seti1("spotLightCount", 2);
     hdri.useIrradianceMap(terrainShader, "irradianceMap");
@@ -244,6 +246,13 @@ bool PBRLayer::onKeyPress(KeyPressEvent& event) {
     keys[event.key] = 1;
     if(event.key == GLFW_KEY_P) {
         Screenshot::capturepng("screenshot_$time.png", width, height);
+    } else if(event.key == GLFW_KEY_L) {
+        drawWireFrame = !drawWireFrame;
+        if(drawWireFrame) {
+            glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+        } else {
+            glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+        }
     }
     return false;
 }

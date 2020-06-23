@@ -27,4 +27,5 @@ struct Mesh : Resource {
 
     GLuint vao, vbo, vbot, ibo;
     GLsizei indexCount;
+    GLenum primitiveType;
 };

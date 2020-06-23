@@ -1,5 +1,5 @@
 
-#version 330
+#version 450
 
 layout (location=0) out vec3 color;
 
@@ -19,8 +19,8 @@ vec3 get(vec3 p) {
         angle = PI + angle;
     }
     float x = angle / (2 * PI);
-    vec3 sample = texture(hdri, vec2(x, y)).rgb;
-    return sample;
+    vec3 v = texture(hdri, vec2(x, y)).rgb;
+    return v;
 }
 
 void main() {
